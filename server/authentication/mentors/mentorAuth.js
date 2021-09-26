@@ -3,7 +3,7 @@ import queries from "../queries";
 import bcrypt from "bcrypt";
 import jwtGenerator from "../../utils/jwtGenerator";
 
-const registerMentor = async (req, res) => {
+const SignUpMentor = async (req, res) => {
   try {
     const { mentor_name, mentor_email, mentor_password } = req.body;
 
@@ -17,7 +17,7 @@ const registerMentor = async (req, res) => {
 
     const bcryptPassword = await bcrypt.hash(mentor_password, salt);
 
-    const newMentor = await pool.query(queries.registerMentor, [
+    const newMentor = await pool.query(queries.SignUpMentor, [
       mentor_name,
       mentor_email,
       bcryptPassword,
@@ -83,7 +83,7 @@ const getMentorDashboard = async (req, res) => {
 };
 
 module.exports = {
-  registerMentor,
+  SignUpMentor,
   loginMentor,
   verifyMentor,
   getMentorDashboard,

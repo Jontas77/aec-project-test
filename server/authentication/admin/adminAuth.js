@@ -3,7 +3,7 @@ import queries from "../queries";
 import bcrypt from "bcrypt";
 import jwtGenerator from "../../utils/jwtGenerator";
 
-const registerAdmin = async (req, res) => {
+const SignUpAdmin = async (req, res) => {
   try {
     const { admin_name, admin_email, admin_password } = req.body;
 
@@ -17,7 +17,7 @@ const registerAdmin = async (req, res) => {
 
     const bcryptPassword = await bcrypt.hash(admin_password, salt);
 
-    const newAdmin = await pool.query(queries.registerAdmin, [
+    const newAdmin = await pool.query(queries.SignUpAdmin, [
       admin_name,
       admin_email,
       bcryptPassword,
@@ -83,7 +83,7 @@ const getAdminDashboard = async (req, res) => {
 };
 
 module.exports = {
-  registerAdmin,
+  SignUpAdmin,
   loginAdmin,
   verifyAdmin,
   getAdminDashboard,

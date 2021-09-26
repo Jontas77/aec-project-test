@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
-
 import Home from "./pages/home/Home";
+import StudentSignUp from "./pages/register/StudentSignUp";
 import StudentLogin from "./pages/login/StudentLogin";
 import MentorLogin from "./pages/login/MentorLogin";
 import AdminLogin from "./pages/login/AdminLogin";
@@ -32,14 +32,15 @@ const App = () => {
 			<Router>
 				<div className="container">
 					<Switch>
+						<Route exact path="/" render={(props) => <Home {...props} />} />
 						<Route
 							exact
-							path="/"
+							path="/student/sign-up"
 							render={(props) =>
 								!isAuthenticated ? (
-									<Home {...props} />
+									<StudentSignUp {...props} setAuth={setAuth} />
 								) : (
-									<Redirect to="/dashboard" />
+									<Redirect to="/student/login" />
 								)
 							}
 						/>

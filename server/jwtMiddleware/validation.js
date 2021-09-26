@@ -13,10 +13,15 @@ module.exports = function (req, res, next) {
 	} = req.body;
 
 	function validEmail(userEmail) {
-		return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail);
+		let domain = "@sun.ac.za";
+		let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+		if (regex.test(userEmail) && userEmail.includes(domain)) {
+			return true;
+		}
 	}
 
-	if (req.path === "/student/register") {
+	if (req.path === "/student/sign-up") {
 		if (![student_name, student_email, student_password].every(Boolean)) {
 			return res.status(401).json("Missing Credentials");
 		} else if (!validEmail(student_email)) {
@@ -30,7 +35,7 @@ module.exports = function (req, res, next) {
 		}
 	}
 
-	if (req.path === "/mentor/register") {
+	if (req.path === "/mentor/sign-up") {
 		if (![mentor_email, mentor_name, mentor_password].every(Boolean)) {
 			return res.status(401).json("Missing Credentials");
 		} else if (!validEmail(mentor_email)) {
@@ -44,7 +49,7 @@ module.exports = function (req, res, next) {
 		}
 	}
 
-	if (req.path === "/admin/register") {
+	if (req.path === "/admin/sign-up") {
 		if (![admin_email, admin_name, admin_password].every(Boolean)) {
 			return res.status(401).json("Missing Credentials");
 		} else if (!validEmail(admin_email)) {

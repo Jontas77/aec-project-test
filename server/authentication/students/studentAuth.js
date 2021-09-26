@@ -3,7 +3,7 @@ import queries from "../queries";
 import bcrypt from "bcrypt";
 import jwtGenerator from "../../utils/jwtGenerator";
 
-const registerStudent = async (req, res) => {
+const SignUpStudent = async (req, res) => {
 	try {
 		const { student_name, student_email, student_password } = req.body;
 
@@ -19,7 +19,7 @@ const registerStudent = async (req, res) => {
 
 		const bcryptPassword = await bcrypt.hash(student_password, salt);
 
-		const newStudent = await pool.query(queries.registerStudent, [
+		const newStudent = await pool.query(queries.SignUpStudent, [
 			student_name,
 			student_email,
 			bcryptPassword,
@@ -85,7 +85,7 @@ const getStudentDashboard = async (req, res) => {
 };
 
 module.exports = {
-	registerStudent,
+	SignUpStudent,
 	loginStudent,
 	verifyStudent,
 	getStudentDashboard,
