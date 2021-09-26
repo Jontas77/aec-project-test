@@ -1,0 +1,189 @@
+.container {
+    min-width: 100%;
+}
+
+.header-dashboard {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #551b33;
+	padding: 1rem;
+	height: 70px;
+}
+
+.logo {
+	width: 105px;
+}
+
+.introduction {
+	text-align: center;
+	margin-top: 3rem;
+}
+
+.introduction h1 {
+	color: #551b33;
+}
+
+.introduction h2 {
+	color: grey;
+}
+
+.display {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5rem;
+	background: lightgray;
+	margin-top: 5rem;
+	text-align: center;
+	border: 1px solid;
+	border-radius: 1rem;
+	min-height: 60px;
+}
+
+.links {
+	margin-top: 2rem;
+	display: flex;
+	justify-content: space-around;
+}
+
+.logout-btn {
+	color: #551b33;
+	background-color: #fff;
+	border-radius: 0.5rem;
+	font-weight: 600;
+	width: 80px;
+    height: 35px;
+}
+
+.profile,
+.projects,
+.competitions {
+	background-color: #f0ab33;
+	color: #551b33;
+	border-radius: 2rem;
+	width: 15rem;
+	font-size: 1.2rem;
+	font-weight: 600;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.fa-user, .fa-project-diagram, .fa-trophy {
+    margin-right: 1rem;
+    font-size: 2rem;
+}
+
+.btn:hover {
+	background-color: #f0ab33;
+	color: #551b33;
+}
+
+.fa-arrow-left,
+.fa-plus {
+	font-size: 1.125rem;
+	cursor: pointer;
+}
+
+.fa-arrow-left:hover,
+.fa-plus:hover {
+	color: #f0ab33;
+}
+
+.new-project {
+	margin-top: 2rem;
+}
+
+.projects-sidebar {
+	width: 30%;
+	height: 100vh;
+	margin-top: 3rem;
+	background-color: #e8e8e8;
+	color: #551b33;
+	border-radius: 1rem;
+	padding: 2rem;
+}
+
+.projects-main {
+	width: 70%;
+	margin-top: 3rem;
+	margin-left: 1rem;
+	background-color: #e8e8e8;
+	color: #551b33;
+	border-radius: 1rem;
+	padding: 2rem;
+}
+
+.project-container {
+	display: flex;
+}
+
+.on-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Media queries */
+
+@media (max-width: 576px) {
+	.header-container {
+		flex-direction: column;
+	}
+
+	.nav-links {
+		margin-top: 2rem;
+	}
+
+	.links {
+		display: block;
+		text-align: center;
+	}
+
+	.message-btn,
+	.projects-btn {
+		margin-bottom: 1rem;
+	}
+
+	.container {
+		padding: 1rem 1rem 2rem 1rem;
+	}
+
+	.introduction h1 {
+		font-size: 2.125rem;
+	}
+
+	.project-container {
+		display: block;
+	}
+
+	.projects-sidebar {
+		width: 100%;
+		height: auto;
+	}
+
+	.projects-main {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.projects-main h1 {
+		font-size: 1.5875rem;
+	}
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 992px) {
+}
+
+@media (min-width: 1200px) {
+}
+
+@media (min-width: 1400px) {
+}
