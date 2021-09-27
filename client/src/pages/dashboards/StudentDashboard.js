@@ -44,19 +44,20 @@ const StudentDashboard = ({ setAuth }) => {
 	return (
 		<>
 			<HeaderDash logout={logout} />
-			<div className="container container-fluid no-padding">
-				<div className="introduction">
-					<h1>Student Dashboard</h1>
-					<h2>Welcome Back {name}</h2>
-				</div>
-				{page === "profile" ? (
-					<Profile />
-				) : page === "projects" ? (
-					<Projects setPage={setPage} />
-				) : page === "competitions" ? (
-					<Competitions setPage={setPage} />
-				) : (
-					<>
+
+			{page === "profile" ? (
+				<Profile setPage={setPage} />
+			) : page === "projects" ? (
+				<Projects setPage={setPage} />
+			) : page === "competitions" ? (
+				<Competitions setPage={setPage} />
+			) : (
+				<>
+					<div className="container container-fluid no-padding">
+						<div className="introduction">
+							<h1>Student Dashboard</h1>
+							<h2>Welcome back {name}</h2>
+						</div>
 						<div className="display">--No Feedback to Display--</div>
 						<div className="links-wrapper">
 							<div className="links">
@@ -74,9 +75,9 @@ const StudentDashboard = ({ setAuth }) => {
 								</div>
 							</div>
 						</div>
-					</>
-				)}
-			</div>
+					</div>
+				</>
+			)}
 		</>
 	);
 };
