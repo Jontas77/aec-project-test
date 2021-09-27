@@ -47,7 +47,6 @@ const ProjectA = () => {
       // history.push('/');
       history.go(-1);
 
-      console.log("newProject:", res);
       setProjects([...projects, res]);
       setProjectName("");
       setProjectTargetGroup("");
