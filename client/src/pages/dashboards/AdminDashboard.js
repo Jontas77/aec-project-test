@@ -129,7 +129,7 @@ const AdminDashboard = ({ setAuth }) => {
 						id='submit'
 						variant="contained"
 						size='large'
-						onClick={() => handlePSubmit()}
+						onClick={handlePSubmit}
 						color='primary'
 					>
 						Create Project
