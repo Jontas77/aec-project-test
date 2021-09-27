@@ -1,57 +1,32 @@
 import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import ProjectA from "../projects/ProjectA";
+import axios from "axios";
 
 
 const AdminDashboard = ({ setAuth }) => {
-	
-	const CHARACTER_LIMIT = 255;
 
-	const [projectName, setProjectName] = useState("");
-	const [projectTargetGroup, setProjectTargetGroup] = useState("");
-	const [projectDescription, setProjectDescription] = useState("");
+	const [project, setProject] = useState(false);
 	const [projects, setProjects] = useState([]);
 
-	const project_name = projectName;
-	const project_target_group = projectTargetGroup;
-	const project_description = projectDescription;
-
-	const handleProjectName = (e) => {
-		e.preventDefault();
-		setProjectName(e.target.value);
+	const handleClick = () => {
+		setProject(true);
 	};
 
-	const handleProjectTargetGroup = (e) => {
-		e.preventDefault();
-		setProjectTargetGroup(e.target.value);
-	};
-
-	const handleProjectDescription = (e) => {
-		e.preventDefault();
-		setProjectDescription(e.target.value);
-	};
-
-	const handlePSubmit = async (e) => {
-		e.preventDefault();
+	const getProjects = async () => {
 		try {
-			const body = { project_name, project_target_group, project_description };
-
-			const res = await fetch("/api/project", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(body),
-			});
-			console.log("newProject:", res);
-			setProjects([...projects, res]);
-			setProjectName("");
-			setProjectTargetGroup("");
-			setProjectDescription("");
-
+			const response = await axios.get("/api/project");
+			const data = response.data;
+			setProjects(data);
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
 
+	useEffect(() => {
+		getProjects();
+	}, [project]);
 
 	return (
 		<div>
@@ -63,9 +38,6 @@ const AdminDashboard = ({ setAuth }) => {
 				</Typography>
 				{/* HEADING END */}
 				<br />
-				<Typography variant="h6" component="h2">
-					Would you like to add a new project?
-				</Typography>
 				<br />
 				<Button
 					onClick={() => setAuth(false)}
@@ -75,65 +47,44 @@ const AdminDashboard = ({ setAuth }) => {
 				</Button>
 				<br />
 				<br />
-				<TextField
-					required
-					id="project-name"
-					label="Project Name"
-					placeholder="What is the name of your project?"
-					variant="outlined"
-					style={{ width: "100%" }}
-					value={projectName}
-					onChange={handleProjectName}
-				/>
-				<br />
-				<br />
-				<TextField
-					required
-					id="outlined-basic"
-					label="Who"
-					variant="outlined"
-					placeholder='Who are you trying to help?'
-					style={{ width: "100%" }}
-					value={projectTargetGroup}
-					onChange={handleProjectTargetGroup}
-				/>
-				<br />
-				<br />
-				<TextField
-					required
-					id="outlined-multiline-static"
-					label="Problem"
-					placeholder='Tell us about the problem you want to solve...'
-					multiline
-					rows={4}
-					inputProps={{
-						maxLength: CHARACTER_LIMIT,
-					}}
-					style={{ width: "100%" }}
-					value={projectDescription}
-					onChange={handleProjectDescription}
-				/>
-				<br />
-				<br />
-				<br />
 				<div>
 					<Button
-						variant='outlined'
-						size='sm'
-					>Upload image</Button>
-				</div>
-				<br />
-				<br />
-				<div>
-					<Button
-						id='submit'
-						variant="contained"
-						size='large'
-						onClick={handlePSubmit}
-						color='primary'
+						onClick={handleClick}
+						variant='contained'
 					>
-						Create Project
+						Add project
 					</Button>
+					<div>
+						<br />
+					<div>
+					{project ? (
+						<ProjectA />
+					) : (
+									projects.map(({ project_name, project_description, project_image, project_target_group }) => {
+							return project === "" ? (
+								<h3>--No projects to display--</h3>
+							) : (
+									<div key={project_name}>
+										<div className="card mb-3" >
+											<div className="row g-0">
+												<div className="col-md-4">
+													<img src={project_image} className="img-fluid rounded-start" alt="..." />
+												</div>
+												<div className="col-md-8">
+													<div className="card-body">
+														<h5 className="card-title">{project_name} created by {project_target_group}</h5>
+														<p className="card-text">{project_description}</p>
+														<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
+							);
+						})
+						)}
+					</div>
+				</div>
 				</div>
 			</Container>
 		</div>
