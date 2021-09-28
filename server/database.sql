@@ -23,7 +23,8 @@ CREATE TABLE admin (
 
 -- Drop table
 -- DROP TABLE projects;
-CREATE TABLE projects (
+
+CREATE TABLE IF NOT EXISTS projects (
   project_id uuid NOT NULL DEFAULT uuid_generate_v4(),
   project_name varchar NOT NULL,
   project_target_group varchar NOT NULL,
