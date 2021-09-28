@@ -20,3 +20,13 @@ CREATE TABLE admin (
   admin_email VARCHAR(255) UNIQUE NOT NULL,
   admin_password VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS projects (
+  project_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  project_name varchar NOT NULL,
+  project_target_group varchar NOT NULL,
+  project_description varchar NOT NULL,
+  project_image varchar NULL,
+  CONSTRAINT projects_pkey PRIMARY KEY (project_id),
+  CONSTRAINT projects_project_name_key UNIQUE (project_name)
+);
