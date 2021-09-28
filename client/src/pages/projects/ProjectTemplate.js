@@ -32,7 +32,7 @@ const ProjectTemplate = ({ setPage }) => {
     setProjectDescription(e.target.value);
   };
 
-  const handlePSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const body = { project_name, project_target_group, project_description };
@@ -47,6 +47,7 @@ const ProjectTemplate = ({ setPage }) => {
       setProjectName("");
       setProjectTargetGroup("");
       setProjectDescription("");
+      setPage("");
 
     } catch (error) {
       console.error(error.message);
@@ -60,7 +61,7 @@ const ProjectTemplate = ({ setPage }) => {
         style={{ width: "100%" }}
       >
         <Button
-        onClick={() => setPage('')}
+        onClick={() => setPage("")}
         variant='contained'
       >
           Back
@@ -112,7 +113,7 @@ const ProjectTemplate = ({ setPage }) => {
             id='submit'
             variant="contained"
             size='large'
-            onClick={handlePSubmit}
+            onClick={handleSubmit}
             color='primary'
           >
             Create Project
