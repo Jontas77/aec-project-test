@@ -10,6 +10,7 @@ import Error from "../../../components/services/Error";
 import { pascalCase } from "../../../components/services/utils";
 
 const StudentProfile = (props) => {
+
 	const [profileInfo, setProfileInfo] = useState({});
 	const [projects, setProjects] = useState([]);
 	const [projectsId, setProjectsId] = useState([]);
