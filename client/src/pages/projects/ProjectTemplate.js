@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import { Button, TextField } from "@mui/material";
 
 
-const ProjectTemplate = ({ setAuth }) => {
+const ProjectTemplate = ({ setPage }) => {
 
   const CHARACTER_LIMIT = 255;
 
@@ -60,7 +60,7 @@ const ProjectTemplate = ({ setAuth }) => {
         style={{ width: "100%" }}
       >
         <Button
-        onClick={() => setAuth(false)}
+        onClick={() => setPage('')}
         variant='contained'
       >
           Back

@@ -1,8 +1,17 @@
+import { Button } from "@mui/material";
 import React from "react";
 
-const AllProjects = ({ projects, project }) => {
+const AllProjects = ({ projects, project, setPage }) => {
   return (
     <div>
+      <div>
+      <Button
+        onClick={() => setPage('')}
+        variant='contained'
+      >
+        Back
+      </Button>
+      </div>
       {projects.map(({ project_name, project_description, project_image, project_target_group }) => {
         return project === "" ? (
           <h3>--No projects to display--</h3>

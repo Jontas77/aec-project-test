@@ -9,11 +9,7 @@ import AllProjects from "../projects/AllProjects";
 const AdminDashboard = ({ setAuth }) => {
 
 	const [projects, setProjects] = useState([]);
-	const [template, setTemplate] = useState(false)
-
-	const handleClick = () => {
-		setTemplate(true);
-	};
+	const [page, setPage] = useState('');
 
 	const getProjects = async () => {
 		try {
@@ -28,13 +24,17 @@ const AdminDashboard = ({ setAuth }) => {
 
 	useEffect(() => {
 		getProjects();
-	}, [template]);
+	}, [page]);
 
 	return (
 		<div>
-			{template === true ? (
-				<ProjectTemplate />
-			) : (
+			{page === 'template' ? (
+				<ProjectTemplate setPage={setPage}/>
+			) : page === 'project' ?
+					(	<div>
+					<AllProjects setPage={setPage} projects={projects} />
+					</div>
+					) : (
 				<Container style={{ width: "100%" }}>
 					{/* HEADING START*/}
 					<Typography variant="h5" component="h2">
@@ -52,16 +52,21 @@ const AdminDashboard = ({ setAuth }) => {
 				<br />
 				<br />
 					<Button
-						onClick={handleClick}
+						onClick={()=>setPage('template')}
 						variant='contained'
 					>
 						Create project
 					</Button>
 					<br />
 				<br />
-				<div>
-					<AllProjects template={template} projects={projects} />
-				</div>
+					<Button
+						onClick={()=>setPage('project')}
+						variant='contained'
+					>
+						All  projects
+					</Button>
+					<br />
+				<br />			
 				</Container>
 			)}
 			</div>
