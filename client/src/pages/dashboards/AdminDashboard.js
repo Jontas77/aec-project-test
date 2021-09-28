@@ -15,7 +15,6 @@ const AdminDashboard = ({ setAuth }) => {
 		try {
 			const response = await axios.get('/api/project');
 			const data = response.data;
-			console.log(data)
 			setProjects(data);
 		} catch (error) {
 			console.error(error.message);

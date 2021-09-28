@@ -12,6 +12,7 @@ const AllProjects = ({ projects, project, setPage }) => {
         Back
       </Button>
       </div>
+      <br />
       {projects.map(({ project_name, project_description, project_image, project_target_group }) => {
         return project === "" ? (
           <h3>--No projects to display--</h3>
