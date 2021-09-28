@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import { Button, TextField } from "@mui/material";
-import { useHistory }from 'react-router-dom'
 
 
 const ProjectA = () => {
@@ -13,7 +12,6 @@ const ProjectA = () => {
   const [projectTargetGroup, setProjectTargetGroup] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [projects, setProjects] = useState([]);
-  const history = useHistory();
 
   const project_name = projectName;
   const project_target_group = projectTargetGroup;
@@ -44,8 +42,6 @@ const ProjectA = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      // history.push('/');
-      history.go(-1);
 
       setProjects([...projects, res]);
       setProjectName("");
