@@ -58,4 +58,43 @@ router.get("/student/competitions", authorization, async (req, res) => {
 	}
 });
 
+router.get("/student/signup", async (req, res) => {
+	/*const {
+		first_name,
+		last_name,
+		gender,
+		stud_num,
+		email,
+		phone,
+		state,
+		bio,
+		img,
+		password,
+		active,
+	} = req.body;
+	console.log(first_name, last_name, gender, stud_num);
+	try {
+		const result = await pool.query(
+			"INSERT INTO students (first_name, last_name, gender, stud_num, email, phone, state, bio, img, password, active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+			[
+				first_name,
+				last_name,
+				gender,
+				stud_num,
+				email,
+				phone,
+				state,
+				bio,
+				img,
+				password,
+				active,
+			]
+		);
+		res.status(200).json(result.rows);
+	} catch (error) {
+		res.status(500).send({ message: "Server error" });
+	}*/
+	res.status(200).json("Hit");
+});
+
 export default router;
