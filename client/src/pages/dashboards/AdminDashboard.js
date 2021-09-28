@@ -46,20 +46,17 @@ const AdminDashboard = ({ setAuth }) => {
 					>
 						Log out
 					</Button>
-					<br />
 				<br />
-				<div>
+				<br />
 					<Button
-						onClick={handleClick}
+						onClick={() => setAuth(true)}
 						variant='contained'
 					>
-						Add project
+						Create
 					</Button>
-				</div>
-				<div>
-					{project && <ProjectTemplate />}
-				</div>
-				<br/>
+					<br />
+
+				<br />
 				<div>
 					<AllProjects project={project} projects={projects} />
 				</div>
