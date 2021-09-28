@@ -97,7 +97,7 @@ const ProjectTemplate = ({ setAuth }) => {
           label="Problem"
           placeholder='Tell us about the problem you want to solve...'
           multiline
-          rows={10}
+          rows={5}
           inputProps={{
             maxLength: CHARACTER_LIMIT,
           }}
