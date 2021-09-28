@@ -80,9 +80,10 @@ const StudentSignUp = ({ setAuth }) => {
 
 	return (
 		<>
-			<button className="btn btn-primary">
-				<Link to="/"></Link>Home
-			</button>
+			<Link to="/">
+				<button className="btn btn-primary">Home</button>
+			</Link>
+
 			<ThemeProvider theme={theme}>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
