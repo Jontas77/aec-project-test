@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	BrowserRouter as Router,
 	Route,
@@ -18,14 +18,47 @@ import MentorDashboard from "./pages/dashboards/MentorDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
 import { toast } from "react-toastify";
 
+import { elapsedTimeStr } from "./components/services/utils";
+import LogIn from "./pages/login/LogIn";
+
 toast.configure();
 
-const App = () => {
+const App = (props) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	const setAuth = (boolean) => {
 		setIsAuthenticated(boolean);
 	};
+
+	const [user, setUser] = useState({
+    auth: false,
+    role: "",
+    user_id: "",
+    last_login: "",
+  });
+
+  const changeUser = (currentUser) => {
+		setUser(currentUser);
+	};
+
+	useEffect(() => {
+		let localUserData = localStorage.getItem("user");
+		if (localUserData) {
+			let userProfile = JSON.parse(localUserData);
+			const minutes = elapsedTimeStr(userProfile.last_login, false);
+			if (minutes > 720) {
+				changeUser({
+					auth: false,
+					role: "",
+					user_id: "",
+					last_login: "",
+				});
+				localStorage.removeItem("user");
+			} else {
+				changeUser(userProfile);
+			}
+		}
+	}, []);
 
 	return (
 		<>
@@ -56,6 +89,12 @@ const App = () => {
 							}
 						/>
 						<Route
+							path="/login"
+							render={(props) => (
+								<LogIn {...props} user={user} changeUser={changeUser} />
+							)}
+						/>
+						<Route
 							exact
 							path="/mentor/login"
 							render={(props) =>
@@ -81,8 +120,8 @@ const App = () => {
 							exact
 							path="/student/dashboard"
 							render={(props) =>
-								isAuthenticated ? (
-									<StudentDashboard {...props} setAuth={setAuth} />
+								user.auth ? (
+									<StudentDashboard {...props} user={user} setAuth={setAuth} />
 								) : (
 									<Redirect to="/student/login" />
 								)

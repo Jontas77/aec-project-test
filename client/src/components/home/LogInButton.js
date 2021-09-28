@@ -39,7 +39,7 @@ function LOgInButton(props) {
 				TransitionComponent={Fade}
 			>
 				<MenuItem
-					onClick={() => props.history.push("/student/login")}
+					onClick={() => props.history.push("/login")}
 					sx={{ color: "primary.main" }}
 				>
 					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} /> Student
