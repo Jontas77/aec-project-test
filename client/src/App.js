@@ -17,6 +17,7 @@ import StudentDashboard from "./pages/dashboards/StudentDashboard";
 import MentorDashboard from "./pages/dashboards/MentorDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
 import { toast } from "react-toastify";
+import ProjectTemplate from "./pages/ProjectTemplate";
 
 toast.configure();
 
@@ -41,6 +42,17 @@ const App = () => {
 									<StudentSignUp {...props} setAuth={setAuth} />
 								) : (
 									<Redirect to="/student/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/admin/dashoard/projects"
+							render={(props) =>
+								!isAuthenticated ? (
+									<ProjectTemplate {...props} setAuth={setAuth} />
+								) : (
+									<Redirect to="/admin/login" />
 								)
 							}
 						/>
