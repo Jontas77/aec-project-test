@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import { Button, TextField } from "@mui/material";
 
 
-const ProjectA = () => {
+const ProjectTemplate = ({ setAuth }) => {
 
   const CHARACTER_LIMIT = 255;
 
@@ -56,8 +56,15 @@ const ProjectA = () => {
 
   return (
     <div>
-      <Container style={{ width: "100%" }}
+      <Container
+        style={{ width: "100%" }}
       >
+        <Button
+        onClick={() => setAuth(false)}
+        variant='contained'
+      >
+          Back
+        </Button>
         <br />
         <br />
         <TextField
@@ -116,4 +123,4 @@ const ProjectA = () => {
   );
 };
 
-export default ProjectA;
+export default ProjectTemplate;
