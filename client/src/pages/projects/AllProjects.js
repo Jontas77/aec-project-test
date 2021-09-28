@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const AllProjects = ({ projects, project }) => {
   return (
@@ -26,7 +26,7 @@ const AllProjects = ({ projects, project }) => {
         );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default AllProjects
+export default AllProjects;
