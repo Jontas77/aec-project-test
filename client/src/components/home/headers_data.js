@@ -11,19 +11,9 @@ const headersData = [
 		id: 2,
 	},
 	{
-		label: "Upcoming Events",
-		href: "/events",
-		id: 3,
-	},
-	{
-		label: "Register",
-		href: "/register",
+		label: "Sign Up",
+		href: "/student/sign-up",
 		id: 4,
-	},
-	{
-		label: "About Us",
-		href: "/about",
-		id: 5,
 	},
 ];
 
