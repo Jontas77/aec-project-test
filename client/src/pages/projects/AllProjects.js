@@ -1,10 +1,10 @@
 import React from 'react'
 
-const AllProjects = ({projects, allProject}) => {
+const AllProjects = ({ projects, project }) => {
   return (
     <div>
       {projects.map(({ project_name, project_description, project_image, project_target_group }) => {
-        return allProject === "" ? (
+        return project === "" ? (
           <h3>--No projects to display--</h3>
         ) : (
           <div key={project_name}>
