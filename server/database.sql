@@ -21,20 +21,7 @@ CREATE TABLE admin (
   admin_password VARCHAR(255) NOT NULL
 );
 
--- Drop table
--- DROP TABLE projects;
-
-CREATE TABLE IF NOT EXISTS projects (
-  project_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-  project_name varchar NOT NULL,
-  project_target_group varchar NOT NULL,
-  project_description varchar NOT NULL,
-  project_image varchar NULL,
-  CONSTRAINT projects_pkey PRIMARY KEY (project_id),
-  CONSTRAINT projects_project_name_key UNIQUE (project_name)
-);
-
--- INITIAL COLUMNS
+-- PROPOSALS - INITIAL COLUMNS
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE proposals (
@@ -45,7 +32,16 @@ CREATE TABLE proposals (
   expected_result varchar NULL
 );
 
--- ALL COLUMNS
+-- COMPETITIONS
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE competitions (
+  comp_id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+  comp_desc varchar UNIQUE NOT NULL,
+  contact_pers varchar NOT NULL
+);
+
+-- PROPOSALS - ALL COLUMNS
 CREATE TABLE proposals (
   proposal_id uuid NOT NULL DEFAULT uuid_generate_v4(),
   proposal_name varchar NOT NULL,
