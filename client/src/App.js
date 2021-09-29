@@ -25,7 +25,7 @@ import HEADERS_DATA from "./assets/data/headers_data";
 
 toast.configure();
 
-const App = (props) => {
+const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	const setAuth = (boolean) => {
