@@ -18,8 +18,6 @@ import MentorDashboard from "./pages/dashboards/MentorDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
 import { toast } from "react-toastify";
 
-import ProjectTemplate from "./pages/projects/ProjectTemplate";
-
 toast.configure();
 
 const App = () => {
@@ -112,18 +110,6 @@ const App = () => {
 								)
 							}
 						/>
-						<Route
-							exact
-							path="/admin/dashboard/project"
-							render={(props) =>
-								isAuthenticated ? (
-									<ProjectTemplate {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/admin/dashboard" />
-								)
-							}
-						/>
-						<Route path="/*" render={(props) => <Home {...props} />} />
 					</Switch>
 				</div>
 			</Router>
