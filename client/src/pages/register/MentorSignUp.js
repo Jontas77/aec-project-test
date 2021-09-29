@@ -66,7 +66,7 @@ const MentorSignUp = ({ setPage }) => {
   const Mentor = (props) => {
     return (
       <div>
-        {mentor.map((mentor) => {
+        {mentor?.map((mentor) => {
           return (
             <>
               <Typography variant="body2" color="text.secondary" align="center" {...props}>

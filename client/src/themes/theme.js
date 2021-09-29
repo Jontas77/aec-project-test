@@ -10,13 +10,21 @@ const theme = createTheme({
 			grey: "#8c979a",
 			yellow: "#b9b013",
 			green: "#01484e",
-			white: "#fff",
+			light: "#fff",
+			error: "#f00",
+			contrastText: "#fff",
+			frosting_cream: "#fffbee",
+		},
+		secondary: {
+			main: "#9c27b0",
+			contrastText: "#fff",
 		},
 		text: {
 			primary: "#60223b",
-			secondary: "#01484e",
-			dark: "#000",
-			light: "#fff",
+			secondary: "#60223b",
+		},
+		background: {
+			paper: "#fff",
 		},
 	},
 	breakpoints: {

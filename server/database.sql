@@ -21,53 +21,45 @@ CREATE TABLE admin (
   admin_password VARCHAR(255) NOT NULL
 );
 
--- PROPOSALS - INITIAL COLUMNS
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE TABLE proposals (
-  proposal_id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  proposal_name varchar UNIQUE NOT NULL,
-  problem_statemnt varchar NOT NULL,
-  proposed_action varchar NOT NULL,
-  expected_result varchar NULL
+CREATE TABLE IF NOT EXISTS projects (
+  project_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  project_name varchar NOT NULL,
+  project_target_group varchar NOT NULL,
+  project_description varchar NOT NULL,
+  project_image varchar NULL,
+  CONSTRAINT projects_pkey PRIMARY KEY (project_id),
+  CONSTRAINT projects_project_name_key UNIQUE (project_name)
 );
 
--- COMPETITIONS
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE TABLE competitions (
-  comp_id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  comp_desc varchar UNIQUE NOT NULL,
-  contact_pers varchar NOT NULL
+CREATE TABLE featured_projects (
+id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+name      VARCHAR(500) NOT NULL,
+description     VARCHAR(10000) NOT NULL,
+participants  VARCHAR(100)[],
+target_groups VARCHAR(100)[],
+img   VARCHAR(800),
+year      VARCHAR(20)
 );
 
--- PROPOSALS - ALL COLUMNS
-CREATE TABLE proposals (
-  proposal_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-  proposal_name varchar NOT NULL,
-  problem_statemnt varchar NOT NULL,
-  proposed_action varchar NOT NULL,
-  expected_result varchar NULL,
-  social_returns varchar NULL,
-  key_activities varchar NULL,
-  key_resources varchar NULL,
-  team varchar NULL,
-  client_profile varchar NULL,
-  client_relationships varchar NULL,
-  client_channels varchar NULL,
-  key_partners varchar NULL,
-  stakeholders varchar NULL,
-  netwokrs varchar NULL,
-  finances varchar NULL,
-  startup_costs varchar NULL,
-  operational_costs varchar NULL,
-  finance_plan varchar NULL,
-  sustainabilit_Business Plan varchar NULL,
-  implementation_plan varchar NULL,
-  key_Milestones varchar NULL,
-  monitoring_evaluation varchar NULL,
-  who_we_are varchar NULL,
-  vision_mission varchar NULL,
-  track_record varchar NULL CONSTRAINT proposals_pkey PRIMARY KEY (proposal_id),
-  CONSTRAINT proposals_project_name_key UNIQUE (proposal_name)
+CREATE TABLE team (
+id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+name      VARCHAR(200) NOT NULL,
+role    VARCHAR(200) NOT NULL,
+img   VARCHAR(500)
+);
+
+CREATE TABLE testimonials (
+id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+name      VARCHAR(200) NOT NULL,
+message    VARCHAR(3000) NOT NULL,
+img   VARCHAR(500)
+);
+
+CREATE TABLE students_profile (
+student_id uuid REFERENCES students(student_id),
+student_number INT NOT NULL,
+student_phone INT NOT NULL,
+student_bio VARCHAR(3000) NOT NULL,
+student_img   VARCHAR(500),
+student_active BOOLEAN NOT NULL
 );
