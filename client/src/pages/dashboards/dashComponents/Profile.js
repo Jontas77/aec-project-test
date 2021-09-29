@@ -2,71 +2,36 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import SettingsIcon from "@mui/icons-material/Settings";
 import PreviewIcon from "@mui/icons-material/Preview";
-import { useHistory } from "react-router-dom";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
 import { pascalCase } from "../../../components/services/utils";
 
-const StudentProfile = (props) => {
-	const [profileInfo, setProfileInfo] = useState({});
+const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
 	const [projects, setProjects] = useState([]);
 	const [projectsId, setProjectsId] = useState([]);
 	const [loading, setLoading] = useState(true);
-	//const [refresh, setRefresh] = useState(false);
 	const [error, setError] = useState({ state: false, message: "" });
-	let history = useHistory();
-	//const user_role = props.user.role;
 
 	useEffect(() => {
-		/*const getProfileInfo = async () => {
-			//const res = await fetch(`/${user_role}s/${props.user.user_id}`);
-            const res = await fetch(`students/${props.user.user_id}`);
-			const body = await res.json();
-			if (res.status !== 200) {
-				setError({
-					...error,
-					state: true,
-					message: body.message,
-				});
-			} else {
-				setProfileInfo(body);
-				setError({
-					...error,
-					state: false,
-					message: "",
-				});
-			}
-			//setLoading(false);
+		const getProfileInfo = () => {
+			const fetchedStudentInfo = {
+				student_name: "Douglas CodeBreaker",
+				student_email: "douglas@sun.ac.za",
+				student_number: 66827908,
+				student_phone: 773456789,
+				student_bio:
+					"Obsessed with books reading/writing | Free thinker | Digital Economy & Digital Labour Markets Researcher",
+				student_img: "",
+				student_active: false,
+			};
+			setProfileInfo(fetchedStudentInfo);
 		};
 		getProfileInfo();
-
-		const getProjects = async () => {
-			const res = await fetch(`/myprojects/${props.user.user_id}`);
-			const body = await res.json();
-			console.log(JSON.stringify(body));
-			if (res.status !== 200) {
-			} else {
-				const newArr = body.map((el) => el.title);
-				const newArr2 = body.map((el) => el.id);
-				setProjects(newArr);
-				setProjectsId(newArr2);
-			}
-			setLoading(false);
-		};
-		getProjects();*/
 		setLoading(false);
 	}, []);
-
-	const openEditProfile = () => {
-		/*history.push({
-			pathname: "/editprofile",
-			state: {
-				data: profileInfo,
-			},
-		});*/
-	};
 
 	const handleProjectView = (event) => {
 		event.preventDefault();
@@ -103,22 +68,17 @@ const StudentProfile = (props) => {
 							>
 								<TopContainer>
 									<PhotoContainer>
-										<InitialsAvatar
-											name={`${profileInfo.student_name}`}
-										/>
+										<InitialsAvatar name={`${profileInfo.student_name}`} />
 									</PhotoContainer>
 									<InfoContainer>
-										<Info
-											profileInfo={profileInfo}
-											openEditProfile={openEditProfile}
-										/>
+										<Info profileInfo={profileInfo} setPage={setPage} />
 									</InfoContainer>
 								</TopContainer>
 							</Box>
 						</MediaContainer>
 						<BioContainer>
 							<Box sx={{ boxShadow: 3, padding: "1rem" }}>
-								<Bio bio={profileInfo.bio} />
+								<Bio bio={profileInfo.student_bio} />
 								<Summary count={projects.length} />
 							</Box>
 						</BioContainer>
@@ -246,8 +206,8 @@ const Projects = ({ projects, handleProjectView, projectsId }) => {
 				border-color="primary.grey"
 				sx={{ marginBottom: "1rem" }}
 			/>
-			{projects.length > 0 ? (
-				projects.map((title, index) => (
+			{projects?.length > 0 ? (
+				projects?.map((title, index) => (
 					<ProjectTile
 						title={title}
 						key={index}
@@ -268,7 +228,7 @@ const Projects = ({ projects, handleProjectView, projectsId }) => {
 	);
 };
 
-const Info = ({ profileInfo, openEditProfile, role }) => {
+const Info = ({ profileInfo, setPage }) => {
 	return (
 		<Box
 			sx={{
@@ -279,42 +239,33 @@ const Info = ({ profileInfo, openEditProfile, role }) => {
 			}}
 		>
 			<Typography gutterBottom variant="h4" sx={{ textAlign: "center" }}>
-				{`${profileInfo.student_name}`}
+				{`${pascalCase(profileInfo?.student_name)}`}
 			</Typography>
-
 			<Typography
 				variant="body1"
 				sx={{ textAlign: "center" }}
-			>{`Gender:  ${pascalCase(profileInfo.gender)}`}</Typography>
+			>{`Email:  ${profileInfo.student_email}`}</Typography>
 			<Typography
 				variant="body1"
 				sx={{ textAlign: "center" }}
-			>{`Role:  ${pascalCase(role)}`}</Typography>
+			>{`Student Number:  ${profileInfo.student_number}`}</Typography>
 			<Typography
 				variant="body1"
 				sx={{ textAlign: "center" }}
-			>{`Email:  ${profileInfo.email}`}</Typography>
+			>{`Phone Number:  0${profileInfo.student_phone}`}</Typography>
 			<Typography
 				variant="body1"
 				sx={{ textAlign: "center" }}
-			>{`Student Number:  ${profileInfo.stud_num}`}</Typography>
-			<Typography
-				variant="body1"
-				sx={{ textAlign: "center" }}
-			>{`Phone Number:  0${profileInfo.phone}`}</Typography>
-			<Typography
-				variant="body1"
-				sx={{ marginBottom: "0.7rem" }}
-			>{`Province:  ${pascalCase(profileInfo.state).replace(
-				"-",
-				" "
-			)}`}</Typography>
+			>{`Account Status: ${
+				profileInfo.student_active === true ? "Active" : " Suspended"
+			}`}</Typography>
 
 			<Box
 				sx={{
 					display: "flex",
-					flexDirection: "row",
+					flexDirection: "column",
 					alignItems: "center",
+					justifyContent: "center",
 					padding: "1rem",
 					width: "100%",
 				}}
@@ -323,10 +274,23 @@ const Info = ({ profileInfo, openEditProfile, role }) => {
 				<Button
 					variant="outlined"
 					startIcon={<EditIcon />}
-					sx={{ textTransform: "none", marginLeft: "1rem" }}
-					onClick={openEditProfile}
+					sx={{
+						textTransform: "none",
+						marginBottom: "0.7rem",
+					}}
+					onClick={() => setPage("edit_profile")}
 				>
-					Edit profile
+					Edit profile info
+				</Button>
+				<Button
+					variant="outlined"
+					startIcon={<SettingsIcon />}
+					sx={{
+						textTransform: "none",
+					}}
+					onClick={() => setPage("account_settings")}
+				>
+					Account Settings
 				</Button>
 			</Box>
 		</Box>
@@ -437,10 +401,10 @@ const Bio = ({ bio }) => {
 };
 
 const InitialsAvatar = ({ name }) => {
-	const arr = name.trim().split(" ");
+	const arr = name?.trim().split(" ");
 	let string = "";
 	for (let word of arr) {
-		string += word.substring(0, 1);
+		string += word?.substring(0, 1);
 	}
 	return (
 		<Box
@@ -450,12 +414,12 @@ const InitialsAvatar = ({ name }) => {
 				alignItems: "center",
 				justifyContent: "center",
 				height: "10rem",
-				width: "8rem",
-				borderRadius: "10%",
+				width: "10rem",
+				borderRadius: "50%",
 				marginBottom: "1rem",
 			}}
 		>
-			<Typography sx={{ fontSize: "4rem", color: "primary.light" }}>
+			<Typography sx={{ fontSize: "5rem", color: "primary.light" }}>
 				{string}
 			</Typography>
 		</Box>
@@ -469,27 +433,26 @@ const UploadButton = () => {
 				alignItems: "center",
 				display: "flex",
 				justifyContent: "center",
+				marginBottom: "0.7rem",
 			}}
 		>
-			<label htmlFor="contained-button-file">
-				<Box
-					accept="image/*"
-					id="contained-button-file"
-					multiple
-					type="file"
-					name="image"
-					sx={{ display: "none" }}
-				>
-					{" "}
-				</Box>
-				<Button
-					variant="outlined"
-					sx={{ textTransform: "none" }}
-					component="span"
-				>
-					<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
-				</Button>
-			</label>
+			<Box
+				accept="image/*"
+				id="contained-button-file"
+				multiple
+				type="file"
+				name="image"
+				sx={{ display: "none" }}
+			>
+				{" "}
+			</Box>
+			<Button
+				variant="outlined"
+				sx={{ textTransform: "none" }}
+				component="span"
+			>
+				<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
+			</Button>
 		</Box>
 	);
 };
@@ -509,7 +472,7 @@ const ProjectTile = ({ title, handleProjectView, projects, projectsId }) => {
 		>
 			<Typography>{title}</Typography>
 			<ViewButton
-				data-id={projectsId[projects.indexOf(title)]}
+				data-id={projectsId[projects?.indexOf(title)]}
 				onClick={handleProjectView}
 			>
 				<Typography variant="body2" sx={{ marginRight: "0.4rem" }}>

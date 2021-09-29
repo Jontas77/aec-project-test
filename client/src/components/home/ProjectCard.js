@@ -5,7 +5,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, Box, IconButton } from "@mui/material";
 import GroupIcon from "@mui/icons-material/GroupOutlined";
+import YearIcon from "@mui/icons-material/EventNote";
 import Typography from "@mui/material/Typography";
+import { truncateStr } from "../../components/services/utils";
 
 export default function ProjectCard({ project }) {
 	return (
@@ -13,41 +15,66 @@ export default function ProjectCard({ project }) {
 			<CardMedia
 				component="img"
 				height="140"
-				image={project.src}
+				image={project?.img}
 				alt="featured project"
 			/>
-			<CardContent>
+			<CardContent
+				sx={{
+					padding: "1rem 0.7rem 0px 0.7rem",
+				}}
+			>
 				<Typography
 					gutterBottom
 					variant="h5"
 					component="div"
-					sx={{ textAlign: "center" }}
+					sx={{ textAlign: "center", padding: "0.7rem" }}
 				>
-					{project.name}
+					{project?.name}
+				</Typography>
+
+				<Typography variant="body2" sx={{ padding: "0.7rem" }}>
+					{truncateStr(project?.description, 300)}
 				</Typography>
 				<Box
 					sx={{
 						display: "flex",
 						flexDirection: "row",
-						marginTop: "0.7rem",
+						marginTop: "0.4rem",
 						paddingBottom: "0px",
 						alignItems: "center",
 					}}
 				>
-					<IconButton >
-						<GroupIcon />
+					<IconButton>
+						<YearIcon />
 					</IconButton>
-					<Typography  variant="body2" sx={{ fontWeight: "600" }}>
-						{project.owners.join(" | ")}
+					<Typography variant="body2" sx={{ fontWeight: "600" }}>
+						{project?.year}
 					</Typography>
 				</Box>
-				<Typography variant="body2">
-					{project.description.length > 300
-						? `${project.description.slice(0, 300)}...`
-						: project.description}
-				</Typography>
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+						flexFlow: "wrap",
+					}}
+				>
+					<IconButton>
+						<GroupIcon />
+					</IconButton>
+					{project?.participants.map((name, index) => (
+						<Typography variant="body2" sx={{ fontWeight: "600", marginLeft: "0.3rem" }} key={index}>
+							{`${" " + name} |`}
+						</Typography>
+					))}
+				</Box>
 			</CardContent>
-			<CardActions>
+			<CardActions
+				sx={{
+					marginTop: "0px",
+					padding: "0.5rem 0.7rem 1rem 0.7rem",
+				}}
+			>
 				<Button size="small">Share</Button>
 				<Button size="small">Read More</Button>
 			</CardActions>

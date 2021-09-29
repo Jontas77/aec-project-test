@@ -58,4 +58,35 @@ router.get("/student/competitions", authorization, async (req, res) => {
 	}
 });
 
+router.get("/featured_projects", async (req, res) => {
+	try {
+		const allProjects = await pool.query(
+			"SELECT * FROM featured_projects LIMIT 12"
+		);
+		res.status(200).json(allProjects.rows);
+	} catch (error) {
+		res.status(500).json({ message: "Couldn't fetch projects at the moment" });
+	}
+});
+
+router.get("/meet_the_team", async (req, res) => {
+	try {
+		const theTeam = await pool.query(
+			"SELECT * FROM team"
+		);
+		res.status(200).json(theTeam.rows);
+	} catch (error) {
+		res.status(500).json({ message: "Couldn't fetch the team at the moment" });
+	}
+});
+
+router.get("/testimonials", async (req, res) => {
+	try {
+		const testimonials = await pool.query("SELECT * FROM testimonials");
+		res.status(200).json(testimonials.rows);
+	} catch (error) {
+		res.status(500).json({ message: "Couldn't fetch the testimonials at the moment" });
+	}
+});
+
 export default router;
