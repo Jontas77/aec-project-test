@@ -1,6 +1,5 @@
 import { Router } from "express";
-import authorization from "./jwtMiddleware/authorization";
-import pool from "./db";
+import pool from './db.js'
 
 const router = new Router();
 
@@ -8,53 +7,45 @@ router.get("/", (_, res) => {
 	res.json({ message: "Welcome to Stellenbosch University" });
 });
 
-// Projects routes
-router.post("/student/projects", authorization, async (req, res) => {
-	const { project_name, project_desc } = req.body;
+// ADD NEW PROPOSAL
+router.post("/proposal", async (req, res) => {
 	try {
-		const newProject = await pool.query(
-			"INSERT INTO projects (student_id, project_name, project_desc) VALUES ($1, $2, $3) RETURNING *",
-			[req.user, project_name, project_desc]
-		);
-		res.json(newProject.rows);
+		const { proposal_name, problem_statemnt, proposed_action, expected_result } = req.body;
+		const newProposal = await pool.query('INSERT INTO proposals (proposal_name, problem_statemnt, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *', [proposal_name, problem_statemnt, proposed_action, expected_result]);
+		res.json({ proposal: newProposal });
 	} catch (error) {
-		console.error(error.message);
+		res.status(500).json({ error: error.message });
 	}
 });
 
-router.get("/student/projects", authorization, async (req, res) => {
+// GET ALL PROPOSALS
+router.get("/proposal", async (req, res) => {
 	try {
-		const results = await pool.query(
-			"SELECT projects.project_name, projects.project_desc FROM students LEFT JOIN projects ON students.student_id = projects.student_id WHERE students.student_id = $1",
-			[req.user]
-		);
-		res.json(results.rows);
+		const proposals = await pool.query('SELECT * FROM proposals');
+		res.json(proposals.rows);
 	} catch (error) {
-		console.error(error.message);
+		res.status(500).json({ error: error.message });
 	}
 });
 
-//Profile routes
-router.post("/student/profile", authorization, async (req, res) => {
-	const { name, email, phone, bio, profile_pic } = req.body;
-	console.log(req.user, name, email, phone, bio, profile_pic);
+// ADD NEW COMPETITION
+router.post("/competition", async (req, res) => {
 	try {
-		const result = await pool.query(
-			"INSERT INTO profile (student_id, name, email, phone, bio, profile_pic) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-			[req.user, name, email, phone, bio, profile_pic]
-		);
-		res.json(result.rows);
+		const { comp_desc, contact_pers } = req.body;
+		const newCompetition = await pool.query('INSERT INTO competitions (comp_desc, contact_pers) VALUES ($1,$2) RETURNING *', [comp_desc, contact_pers]);
+		res.json({ proposal: newCompetition });
 	} catch (error) {
-		console.error(error.message);
+		res.status(500).json({ error: error.message });
 	}
 });
 
-router.get("/student/competitions", authorization, async (req, res) => {
+// GET ALL COMPETITIONS
+router.get("/competition", async (req, res) => {
 	try {
-		const results = await pool.query("SELECT * FROM competitions");
-		res.json(results.rows);
+		const competitions = await pool.query('SELECT * FROM competitions');
+		res.json(competitions.rows);
 	} catch (error) {
-		console.error(error.message);
+		res.status(500).json({ error: error.message });
 	}
 });
 

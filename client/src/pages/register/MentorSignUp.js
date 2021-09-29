@@ -14,10 +14,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const MentorRegister = ({ setAuth }) => {
+const MentorSignUp = ({ setPage }) => {
+
   const [mentorName, setMentorName] = useState("");
-  const [mentorSurname, setMentorSurname] = useState("");
-  const [mentorNumber, setMentorNumber] = useState("");
   const [mentorEmail, setMentorEmail] = useState("");
   const [mentorPassword, setMentorPassword] = useState("");
   const [mentor, setMentor] = useState([]);
@@ -25,16 +24,6 @@ const MentorRegister = ({ setAuth }) => {
   const handleMentorName = (event) => {
     event.preventDefault();
     setMentorName(event.target.value);
-  };
-
-  const handleMentorSurname = (event) => {
-    event.preventDefault();
-    setMentorSurname(event.target.value);
-  };
-
-  const handleMentorNumber = (event) => {
-    event.preventDefault();
-    setMentorNumber(event.target.value);
   };
 
   const handleMentorEmail = (event) => {
@@ -51,15 +40,11 @@ const MentorRegister = ({ setAuth }) => {
     event.preventDefault();
     const newMentor = ({
       mentor_name: mentorName,
-      mentor_surname: mentorSurname,
-      mentor_number: mentorNumber,
       mentor_email: mentorEmail,
       mentor_password: mentorPassword,
     });
 
     setMentor([...mentor, newMentor]);
-    setMentorName("");
-    setMentorSurname("");
     setMentorName("");
     setMentorEmail("");
     setMentorPassword("");
@@ -102,17 +87,16 @@ const MentorRegister = ({ setAuth }) => {
   return (
     <>
       <div>
-        <Typography component="h1" variant="h5">
-          Advancing Engaged Citizenship
-        </Typography>
-        <br />
-        <br />
-        <Typography variant="h6" component="h2">
-          Mentor Register
-        </Typography>
-        <button onClick={() => setAuth(true)}>Register</button>
-      </div>
       <Link to="/">Home</Link>
+        <br />
+        <br />
+        <Button
+          onClick={() => setPage("")}
+          variant='contained'
+        >
+          Back
+        </Button>
+      </div>
 
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
@@ -129,13 +113,13 @@ const MentorRegister = ({ setAuth }) => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Mentor Register
+              Mentor sign up
             </Typography>
             <Box
               component="form"
               onSubmit={handleSubmit}
               noValidate sx={{ mt: 1 }}>
-              {/* STUDENT NAME */}
+              {/* MENTOR NAME */}
               <TextField
                 margin="normal"
                 required
@@ -148,33 +132,7 @@ const MentorRegister = ({ setAuth }) => {
                 value={mentorName}
                 onChange={handleMentorName}
               />
-              {/* STUDENT SURNAME */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="surname"
-                label="Surname"
-                name="surname"
-                autoComplete="surname"
-                autoFocus
-                value={mentorSurname}
-                onChange={handleMentorSurname}
-              />
-              {/* STUDENT NUMBER */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="number"
-                label="Number"
-                name="number"
-                autoComplete="number"
-                autoFocus
-                value={mentorNumber}
-                onChange={handleMentorNumber}
-              />
-              {/* STUDENT EMAIL */}
+              {/* MENTOR EMAIL */}
               <TextField
                 margin="normal"
                 required
@@ -187,6 +145,7 @@ const MentorRegister = ({ setAuth }) => {
                 value={mentorEmail}
                 onChange={handleMentorEmail}
               />
+              {/* MENTOR PASSWORD */}
               <TextField
                 margin="normal"
                 required
@@ -210,7 +169,7 @@ const MentorRegister = ({ setAuth }) => {
                 sx={{ mt: 3, mb: 2 }}
                 onClick={handleSubmit}
               >
-                Log In
+                Sign up
               </Button>
               <Grid container>
                 <Grid item xs>
@@ -232,4 +191,4 @@ const MentorRegister = ({ setAuth }) => {
   );
 };
 
-export default MentorRegister;
+export default MentorSignUp;
