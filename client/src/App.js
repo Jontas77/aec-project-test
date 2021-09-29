@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 
 import { elapsedTimeStr } from "./components/services/utils";
 import LogIn from "./pages/login/LogIn";
+import Header from "./components/Header";
+import HEADERS_DATA from "./assets/data/headers_data";
 
 toast.configure();
 
@@ -39,6 +41,17 @@ const App = (props) => {
 
   const changeUser = (currentUser) => {
 		setUser(currentUser);
+	};
+
+	const [notifications, setNotifications] = useState(0);
+	const [headers, setHeaders] = useState(HEADERS_DATA.home);
+
+	const changeNotifications = (count) => {
+		setNotifications(count);
+	};
+
+	const changeHeaders = (currentHeaders) => {
+		setHeaders(currentHeaders);
 	};
 
 	useEffect(() => {
@@ -63,7 +76,14 @@ const App = (props) => {
 	return (
 		<>
 			<Router>
-				<div className="container">
+					<Header
+						user={user}
+						changeUser={changeUser}
+						notifications={notifications}
+						changeNotifications={changeNotifications}
+						headers={headers}
+						changeHeaders={changeHeaders}
+					/>
 					<Switch>
 						<Route exact path="/" render={(props) => <Home {...props} />} />
 						<Route
@@ -123,7 +143,7 @@ const App = (props) => {
 								user.auth ? (
 									<StudentDashboard {...props} user={user} setAuth={setAuth} />
 								) : (
-									<Redirect to="/student/login" />
+									<Redirect to="/login" />
 								)
 							}
 						/>
@@ -151,7 +171,6 @@ const App = (props) => {
 						/>
 						<Route path="/*" render={(props) => <Home {...props} />} />
 					</Switch>
-				</div>
 			</Router>
 		</>
 	);

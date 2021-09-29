@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "./Dashboard.css";
 
 import Profile from "./dashComponents/Profile";
+import EditProfile from "./dashComponents/EditProfile";
 import Projects from "./dashComponents/Projects";
 import Competitions from "./dashComponents/Compititions";
 
@@ -13,6 +14,7 @@ const StudentDashboard = ({ setAuth }) => {
 	const [name, setName] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
+	const [profileInfo, setProfileInfo] = useState({});
 
 	const getName = async () => {
 		try {
@@ -43,14 +45,24 @@ const StudentDashboard = ({ setAuth }) => {
 
 	return (
 		<>
-			<HeaderDash logout={logout} />
+			{/*<HeaderDash logout={logout} />*/}
 			<div className="container container-fluid no-padding">
 				<div className="introduction">
 					<h1>Student Dashboard</h1>
 					<h2>Welcome Back {name}</h2>
 				</div>
 				{page === "profile" ? (
-					<Profile />
+					<Profile
+						setPage={setPage}
+						setProfileInfo={setProfileInfo}
+						profileInfo={profileInfo}
+					/>
+				) : page === "edit_profile" ? (
+					<EditProfile
+						setPage={setPage}
+						setProfileInfo={setProfileInfo}
+						profileInfo={profileInfo}
+					/>
 				) : page === "projects" ? (
 					<Projects setPage={setPage} />
 				) : page === "competitions" ? (

@@ -58,4 +58,8 @@ router.get("/student/competitions", authorization, async (req, res) => {
 	}
 });
 
+router.get("/featured_projects", authorization, async (req, res) => {
+	res.status(200).json("Success");
+});
+
 export default router;
