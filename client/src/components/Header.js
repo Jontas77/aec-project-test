@@ -257,9 +257,9 @@ function Header(props) {
 	};
 
 	const getHeadersData = () => {
-		if (props.user.auth && props.user.type === "student") {
+		if (props.user.auth && props.user.role === "student") {
 			return HEADERS_DATA.student;
-		} else if (props.user.auth && props.user.type === "mentor") {
+		} else if (props.user.auth && props.user.role === "mentor") {
 			return HEADERS_DATA.mentor;
 		} else {
 			return HEADERS_DATA.home;

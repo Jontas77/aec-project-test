@@ -9,7 +9,8 @@ import {
 
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import ProjectCard from "./ProjectCard";
+
+import FeaturedProjects from "./FeaturedProjects";
 import Testimonials from "./Testimonials";
 import Team from "./Team";
 //import theme from '../../themes/theme';
@@ -61,34 +62,9 @@ const Content = (props) => {
 						</Grid>
 					</Grid>
 				</Box>
-				<Box sx={{ flexGrow: 1, marginTop: "3rem" }}>
-					<Typography
-						sx={{
-							fontWeight: "600",
-							fontSize: "2.4rem",
-						}}
-					>
-						Featured Projects
-					</Typography>
-					<Divider
-						orientation="horizontal"
-						flexItem
-						border-color="primary.grey"
-					/>
-					<Grid container spacing={2} sx={{ marginTop: "1.3rem" }}>
-						{props.projects?.map((project, index) => (
-							<Grid item xs={12} sm={6} md={4} key={`${project.name}-${index}`}>
-								<ProjectCard project={project} />
-							</Grid>
-						))}
-					</Grid>
-				</Box>
-				<Box>
-					<Testimonials testimonials={props.testimonials} />
-				</Box>
-				<Box>
-					<Team team={props.team} />
-				</Box>
+				<FeaturedProjects />
+				<Team />
+				<Testimonials />
 			</Stack>
 		</Container>
 	);

@@ -71,106 +71,117 @@ const App = (props) => {
 				changeUser(userProfile);
 			}
 		}
+		//user.auth ? changeHeaders(HEADERS_DATA[user.role]) : changeHeaders(HEADERS_DATA.home);
 	}, []);
 
 	return (
 		<>
 			<Router>
-					<Header
-						user={user}
-						changeUser={changeUser}
-						notifications={notifications}
-						changeNotifications={changeNotifications}
-						headers={headers}
-						changeHeaders={changeHeaders}
+				<Header
+					user={user}
+					changeUser={changeUser}
+					notifications={notifications}
+					changeNotifications={changeNotifications}
+					headers={headers}
+				/>
+				<Switch>
+					<Route exact path="/" render={(props) => <Home {...props} />} />
+					<Route
+						exact
+						path="/student/sign-up"
+						render={(props) =>
+							!isAuthenticated ? (
+								<StudentSignUp {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/student/login" />
+							)
+						}
 					/>
-					<Switch>
-						<Route exact path="/" render={(props) => <Home {...props} />} />
-						<Route
-							exact
-							path="/student/sign-up"
-							render={(props) =>
-								!isAuthenticated ? (
-									<StudentSignUp {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/student/login" />
-								)
-							}
-						/>
-						<Route
-							exact
-							path="/student/login"
-							render={(props) =>
-								!isAuthenticated ? (
-									<StudentLogin {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/student/dashboard" />
-								)
-							}
-						/>
-						<Route
-							path="/login"
-							render={(props) => (
-								<LogIn {...props} user={user} changeUser={changeUser} />
-							)}
-						/>
-						<Route
-							exact
-							path="/mentor/login"
-							render={(props) =>
-								!isAuthenticated ? (
-									<MentorLogin {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/mentor/dashboard" />
-								)
-							}
-						/>
-						<Route
-							exact
-							path="/admin/login"
-							render={(props) =>
-								!isAuthenticated ? (
-									<AdminLogin {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/admin/dashboard" />
-								)
-							}
-						/>
-						<Route
-							exact
-							path="/student/dashboard"
-							render={(props) =>
-								user.auth ? (
-									<StudentDashboard {...props} user={user} setAuth={setAuth} />
-								) : (
-									<Redirect to="/login" />
-								)
-							}
-						/>
-						<Route
-							exact
-							path="/mentor/dashboard"
-							render={(props) =>
-								isAuthenticated ? (
-									<MentorDashboard {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/mentor/login" />
-								)
-							}
-						/>
-						<Route
-							exact
-							path="/admin/dashboard"
-							render={(props) =>
-								isAuthenticated ? (
-									<AdminDashboard {...props} setAuth={setAuth} />
-								) : (
-									<Redirect to="/admin/login" />
-								)
-							}
-						/>
-						<Route path="/*" render={(props) => <Home {...props} />} />
-					</Switch>
+					<Route
+						exact
+						path="/student/login"
+						render={(props) =>
+							!isAuthenticated ? (
+								<StudentLogin {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/student/dashboard" />
+							)
+						}
+					/>
+					<Route
+						path="/login"
+						render={(props) => (
+							<LogIn
+								{...props}
+								user={user}
+								changeUser={changeUser}
+								changeHeaders={changeHeaders}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path="/mentor/login"
+						render={(props) =>
+							!isAuthenticated ? (
+								<MentorLogin {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/mentor/dashboard" />
+							)
+						}
+					/>
+					<Route
+						exact
+						path="/admin/login"
+						render={(props) =>
+							!isAuthenticated ? (
+								<AdminLogin {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/admin/dashboard" />
+							)
+						}
+					/>
+					<Route
+						exact
+						path="/student/dashboard"
+						render={(props) =>
+							user.auth ? (
+								<StudentDashboard
+									{...props}
+									user={user}
+									setAuth={setAuth}
+									changeHeaders={changeHeaders}
+									changeNotifications={changeNotifications}
+								/>
+							) : (
+								<Redirect to="/login" />
+							)
+						}
+					/>
+					<Route
+						exact
+						path="/mentor/dashboard"
+						render={(props) =>
+							isAuthenticated ? (
+								<MentorDashboard {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/mentor/login" />
+							)
+						}
+					/>
+					<Route
+						exact
+						path="/admin/dashboard"
+						render={(props) =>
+							isAuthenticated ? (
+								<AdminDashboard {...props} setAuth={setAuth} />
+							) : (
+								<Redirect to="/admin/login" />
+							)
+						}
+					/>
+					<Route path="/*" render={(props) => <Home {...props} />} />
+				</Switch>
 			</Router>
 		</>
 	);

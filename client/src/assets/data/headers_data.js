@@ -19,7 +19,7 @@ const headersData = {
 	student: [
 		{
 			label: "Dashboard",
-			href: "/dashboard",
+			href: "/student/dashboard",
 			id: 8,
 		},
 		{

@@ -41,6 +41,20 @@ img   VARCHAR(800),
 year      VARCHAR(20)
 );
 
+CREATE TABLE team (
+id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+name      VARCHAR(200) NOT NULL,
+role    VARCHAR(200) NOT NULL,
+img   VARCHAR(500)
+);
+
+CREATE TABLE testimonials (
+id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+name      VARCHAR(200) NOT NULL,
+message    VARCHAR(3000) NOT NULL,
+img   VARCHAR(500)
+);
+
 CREATE TABLE students_profile (
 student_id uuid REFERENCES students(student_id),
 student_number INT NOT NULL,

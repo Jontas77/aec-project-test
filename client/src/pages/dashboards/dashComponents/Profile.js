@@ -288,7 +288,7 @@ const Info = ({ profileInfo, setPage }) => {
 					sx={{
 						textTransform: "none",
 					}}
-					onClick={() => setPage("settings")}
+					onClick={() => setPage("account_settings")}
 				>
 					Account Settings
 				</Button>

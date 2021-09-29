@@ -1,12 +1,36 @@
-import styled from 'styled-components';
-import { Box, Divider, Typography } from '@mui/material';
-import theme from '../../themes/theme';
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import {
+	Box,
+	Stack,
+	Typography,
+	Grid,
+	Divider,
+	Container,
+} from "@mui/material";
+import theme from "../../themes/theme";
 
 const Testimonials = (props) => {
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+		const getData = async () => {
+			const res = await fetch("/api/testimonials");
+			const body = await res.json();
+			if (res.status !== 200) {
+				alert(body.message);
+			} else {
+				setTestimonials(body);
+			}
+		};
+
+		getData();
+	}, []);
   return (
-    <Container>
+    <MyContainer>
+      { testimonials.length > 0 ? (
       <Box>
-        <Typography sx={{ fontWeight: 600, fontSize: '2.4rem' }}>
+        <Typography sx={{ fontWeight: 600, fontSize: "2.4rem" }}>
           Testimonials
         </Typography>
         <Divider
@@ -14,31 +38,31 @@ const Testimonials = (props) => {
           border-color={theme.palette.primary.grey}
         />
 
-        <Grid>
-          {props.testimonials
-            ? props.testimonials?.map((testimonial, i) => (
+        <MyGrid>
+          {testimonials?.map((testimonial, i) => (
                 <Holder key={`${testimonial.name}-${i}`}>
                   <Item>
                     <ImageHolder>
                       <img src={`${testimonial.img}`} alt='' />
                     </ImageHolder>
                     <Content>
-                      <p>"{testimonial.message}"</p>
+                      <p>{testimonial.message}</p>
                       <Meta> - {testimonial.name} </Meta>
                     </Content>
                   </Item>
                 </Holder>
               ))
-            : 'Loading data...'}
-        </Grid>
-      </Box>
-    </Container>
+            }
+        </MyGrid>
+      </Box>):(<Box></Box>)
+}
+    </MyContainer>
   );
 };
 
 export default Testimonials;
 
-const Container = styled.div`
+const MyContainer = styled.div`
   margin-top: 2.9rem;
 `;
 
@@ -58,7 +82,7 @@ const ImageHolder = styled.div`
   }
 `;
 
-const Grid = styled.div`
+const MyGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-gap: 5px;

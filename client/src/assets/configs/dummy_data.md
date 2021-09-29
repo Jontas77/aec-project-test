@@ -8,17 +8,7 @@ CREATE TABLE students_profiles
 
 
 
-#Featured Projects
-CREATE TABLE featured_projects (
-id        uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-name      VARCHAR(500) NOT NULL,
-description     VARCHAR(10000) NOT NULL,
-participants  VARCHAR(100)[],
-target_groups VARCHAR(100)[],
-img   VARCHAR(800),
-year      VARCHAR(20)
-);
-
+#FEATURED PROJECTS
 
 INSERT INTO featured_projects (name,  participants, target_groups, img, year, description)
 VALUES ('Ubuntu Learning Community (with Prison-to-College Pipeline South Africa)',
@@ -36,4 +26,42 @@ INSERT INTO featured_projects (name,  participants, target_groups, img, year, de
 VALUES ('Velddrif Entrepreneurship Programme', ARRAY['Coetzee CE Dr', 'Mathee S Miss'], 
 ARRAY['Adults'], '/images/projects/project-03.jpg', '2021',
 'Youth Unemployment and Hopelessness are rife in Noordhoek.  Noordhoek is a sub-burb of Laaiplek. It is a historically colored area.  Laaiplek is situated right at the mouth of the Berg River.  ​The prospects for the youth in Laaiplek unfortunately have not improved much in the last decade. Jobs are in very scarce supply in the greater Laaiplek/Velddrif region.  With such significant numbers of youth unemployment it is no surprise that all sorts of social ills are part of everyday living.  For example, drug abuse and violence are common practices.  There seems to be not much hope.  Without hope, life becomes fairly meaningless.  Therefore all hands must be on deck to create hope, where hope is very elusive.  The purpose of this project will be to run/present a youth entrepreneur program twice a year focusing on around 10 identified young people (age 18 to 25) lasting about 12 weeks each.  The program will be practical as much as possible. The program will also focus on linking these young people with established businesses and organizations.  Post-program support will also be available to keep track of the successes and failures of the program.  The program will also align and work with existing NGOs within Noordhoek to pull resources and create synergies.  Working the Bergriver Municipality and the Velddrif Chamber of Business will also be relevant and significant, especially in terms of selecting the youth and mentorships.');
+
+
+
+#TEAM
+
+INSERT INTO team (name, role, img)
+VALUES ( 'John Doe', 'Director', '/images/team/01.jpg');
+
+INSERT INTO team (name, role, img)
+VALUES ( 'Mike Doe', 'Lead Mentor', '/images/team/02.jpg');
+
+INSERT INTO team (name, role, img)
+VALUES ( 'Jane Doe', 'Mentor', '/images/team/03.jpg');
+
+INSERT INTO team (name, role, img)
+VALUES ( 'Karen Doe', 'Project Manager', '/images/team/04.jpg');
+
+
+#TESTIMONIALS
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('John Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at','/images/testimonials/01.jpg');
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('Jonathan Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at', '/images/testimonials/02.jpg');
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('Mike Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.','/images/testimonials/03.jpg');
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('Lorraine Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.','/images/testimonials/04.jpg');
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('Peter Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.','/images/testimonials/05.jpg');
+
+INSERT INTO testimonials (name, message, img)
+VALUES ('Carol Doe', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam sedasd commodo nibh ante facilisis bibendum dolor feugiat at.','/images/testimonials/06.jpg');
+
 

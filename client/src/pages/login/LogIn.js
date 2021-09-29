@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import FormLink from "@mui/material/Link";
 import {
 	Box,
@@ -15,6 +16,7 @@ import Container from "@mui/material/Container";
 import { withSnackbar } from "notistack";
 import moment from "moment";
 import { elapsedTimeStr, pascalCase } from "../../components/services/utils";
+import HEADERS_DATA from "../../assets/data/headers_data";
 
 const LogIn = (props) => {
 	const [values, setValues] = useState({
@@ -41,6 +43,7 @@ const LogIn = (props) => {
 			} else {
 				props.changeUser(userProfile);
                 handleModalClose();
+				props.changeHeaders(HEADERS_DATA.student);
                 props.history.push(`/${userProfile.role}/dashboard`);
 			}
 		}
