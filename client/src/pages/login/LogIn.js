@@ -42,12 +42,12 @@ const LogIn = (props) => {
 				localStorage.removeItem("user");
 			} else {
 				props.changeUser(userProfile);
-                handleModalClose();
+				handleModalClose();
 				props.changeHeaders(HEADERS_DATA.student);
-                props.history.push(`/${userProfile.role}/dashboard`);
+				props.history.push(`/${userProfile.role}/dashboard`);
 			}
 		}
-	}, []);
+	}, [props]);
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const handleModalOpen = () => setModalOpen(true);
@@ -63,13 +63,23 @@ const LogIn = (props) => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		handleModalOpen();
-        const { email, password, role } = values;
+		const { email, password, role } = values;
 
 		try {
-			const body = {
+			const student = {
 				student_email: email,
 				student_password: password,
 			};
+			const mentor = {
+				mentor_email: email,
+				mentor_password: password,
+			};
+			const admin = {
+				admin_email: email,
+				admin_password: password,
+			};
+			const body =
+				role === "student" ? student : role === "mentor" ? mentor : admin;
 			const response = await fetch(`/auth/${role}/login`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
