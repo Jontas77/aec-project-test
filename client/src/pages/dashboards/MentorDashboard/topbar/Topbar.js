@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import "./Topbar.css";
 import {
@@ -6,8 +8,13 @@ import {
    Logout,
    } from "@mui/icons-material";
 
+
 const Topbar = () => {
+
+
+
   return (
+
     <div className='topbar'>
       <div className='topbarwapper'>
         <div className='topleft'>
@@ -30,6 +37,7 @@ const Topbar = () => {
       </div>
     </div>
   );
+
 };
 
 export default Topbar;
