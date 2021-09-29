@@ -13,16 +13,11 @@ function LogInButton(props) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
-		if (props.user.auth) {
+		if (props.isAuthenticated) {
 			props.enqueueSnackbar("You have been logged out!", { variant: "error" });
-			props.changeUser({
-				auth: false,
-				role: "",
-				user_id: "",
-				user_name: "",
-			});
-			localStorage.removeItem("user");
-			props.changeHeaders(HEADERS_DATA.home);
+			localStorage.removeItem("token");
+			props.setAuth(false);
+			//props.changeHeaders(HEADERS_DATA.home);
 			props.history.push("/");
 		} else {
 			setAnchorEl(event.currentTarget);
@@ -56,7 +51,7 @@ function LogInButton(props) {
 						marginLeft: "0.3rem",
 					}}
 					src={
-						props.user.auth
+						props.isAuthenticated
 							? "/images/navbar/log_out.png"
 							: "/images/navbar/log_in.png"
 					}
@@ -72,7 +67,7 @@ function LogInButton(props) {
 						textTransform: "none",
 					}}
 				>
-					{props.user.auth ? "Log out" : "Log In"}
+					{props.isAuthenticated ? "Log out" : "Log In"}
 				</Button>
 			</Box>
 			<Menu
@@ -87,14 +82,8 @@ function LogInButton(props) {
 			>
 				<MenuItem
 					onClick={() => {
-						props.history.push("/login");
+						props.history.push("/student/login");
 						handleClose();
-						props.changeUser({
-							auth: false,
-							role: "student",
-							user_id: "",
-							user_name: "",
-						});
 					}}
 					sx={{ color: "primary.main" }}
 				>
@@ -109,14 +98,8 @@ function LogInButton(props) {
 				</MenuItem>
 				<MenuItem
 					onClick={() => {
-						props.history.push("/login");
+						props.history.push("/mentor/login");
 						handleClose();
-						props.changeUser({
-							auth: false,
-							role: "mentor",
-							user_id: "",
-							user_name: "",
-						});
 					}}
 					sx={{ color: "primary.main" }}
 				>
@@ -131,14 +114,8 @@ function LogInButton(props) {
 				</MenuItem>
 				<MenuItem
 					onClick={() => {
-						props.history.push("/login");
+						props.history.push("/admin/login");
 						handleClose();
-						props.changeUser({
-							auth: false,
-							role: "admin",
-							user_id: "",
-							user_name: "",
-						});
 					}}
 					sx={{ color: "primary.main" }}
 				>

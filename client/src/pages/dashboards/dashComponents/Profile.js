@@ -9,7 +9,12 @@ import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
 import { pascalCase } from "../../../components/services/utils";
 
-const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
+const StudentProfile = ({
+	setPage,
+	profileInfo,
+	setProfileInfo,
+	basicInfo,
+}) => {
 	const [projects, setProjects] = useState([]);
 	const [projectsId, setProjectsId] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -18,8 +23,8 @@ const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
 	useEffect(() => {
 		const getProfileInfo = () => {
 			const fetchedStudentInfo = {
-				student_name: "Douglas CodeBreaker",
-				student_email: "douglas@sun.ac.za",
+				student_name: basicInfo?.student_name || "Douglas CodeBreaker",
+				student_email: basicInfo?.student_email || "douglas@sun.ac.za",
 				student_number: 66827908,
 				student_phone: 773456789,
 				student_bio:
@@ -50,7 +55,7 @@ const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
 			{loading ? (
 				<Loading />
 			) : error.state ? (
-				<Error message={error.message} />
+				<Error message={error?.message} />
 			) : (
 				<MainContainer>
 					<SubContainer>
@@ -68,7 +73,7 @@ const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
 							>
 								<TopContainer>
 									<PhotoContainer>
-										<InitialsAvatar name={`${profileInfo.student_name}`} />
+										<InitialsAvatar name={`${profileInfo?.student_name}`} />
 									</PhotoContainer>
 									<InfoContainer>
 										<Info profileInfo={profileInfo} setPage={setPage} />
@@ -78,7 +83,7 @@ const StudentProfile = ({ setPage, profileInfo, setProfileInfo }) => {
 						</MediaContainer>
 						<BioContainer>
 							<Box sx={{ boxShadow: 3, padding: "1rem" }}>
-								<Bio bio={profileInfo.student_bio} />
+								<Bio bio={profileInfo?.student_bio} />
 								<Summary count={projects.length} />
 							</Box>
 						</BioContainer>

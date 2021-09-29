@@ -48,7 +48,9 @@ const Content = (props) => {
 								}}
 							>
 								<WrappingText>
-									<WrappedImage onClick={() => history.push("/register")}>
+									<WrappedImage
+										onClick={() => history.push("/student/sign-up")}
+									>
 										<img src="/images/home/join2.png" alt="join now" />
 									</WrappedImage>
 									A platform where students can journey with a team of mentors
