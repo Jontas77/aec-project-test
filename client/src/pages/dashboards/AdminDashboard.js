@@ -6,6 +6,7 @@ import ProposalTempl from "../proposals/ProposalTempl";
 import AllProposals from "../proposals/Proposals";
 import Competitions from "../proposals/Competitions";
 import CompTemplate from "../proposals/CompTemplate";
+import MentorSignUp from "../register/MentorSignUp";
 
 const AdminDashboard = ({ setAuth }) => {
 
@@ -39,7 +40,10 @@ const AdminDashboard = ({ setAuth }) => {
 						(<div>
 							<Competitions page={page} setPage={setPage} />
 							</div>
-						) : (<Container style={{ width: "100%" }}>
+							) : page === 'mentor' ? (
+								<MentorSignUp setPage={setPage} />
+							) :
+							(<Container style={{ width: "100%" }}>
 								{/* HEADING START*/}
 								<Typography variant="h5" component="h2">
 									Welcome back admin@sun.ac.za
@@ -84,6 +88,14 @@ const AdminDashboard = ({ setAuth }) => {
 								variant='contained'
 								>
 								Add competition
+								</Button>
+								<br />
+								<br />
+								<Button
+								onClick={() => setPage("mentor")}
+								variant='contained'
+								>
+								Add mentor
 								</Button>
 				</Container>
 			)}
