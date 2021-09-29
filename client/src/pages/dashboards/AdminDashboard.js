@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import { Button, Typography } from "@mui/material";
 import axios from "axios";
-import ProposalA from "../proposals/ProposalA";
-import AllProposals from "../proposals/AllProposals";
+import ProposalTempl from "../proposals/ProposalTempl";
+import AllProposals from "../proposals/Proposals";
 import Competitions from "../proposals/Competitions";
+import CompTemplate from "../proposals/CompTemplate";
 
 const AdminDashboard = ({ setAuth }) => {
 
@@ -29,12 +30,14 @@ const AdminDashboard = ({ setAuth }) => {
 	return (
 		<div>
 			{page === "proposal" ? (
-				<ProposalA setPage={setPage} />
-			) : page === "all" ?
+				<ProposalTempl setPage={setPage} />
+			) : page === "compTemplate" ? (
+					<CompTemplate setPage={setPage} />
+					) :	page === "all" ?
 					(<AllProposals page={page} setPage={setPage} proposals={proposals} />
 					) : page === "competition" ?
 						(<div>
-							<Competitions page={page} setPage={setPage} proposals={proposals} />
+							<Competitions page={page} setPage={setPage} />
 							</div>
 						) : (<Container style={{ width: "100%" }}>
 								{/* HEADING START*/}
@@ -53,26 +56,34 @@ const AdminDashboard = ({ setAuth }) => {
 								<br />
 								<br />
 								<Button
+									onClick={() => setPage("all")}
+									variant='contained'
+								>
+									Proposals
+								</Button>
+								<br />
+								<br />
+								<Button
 									onClick={()=>setPage("proposal")}
 									variant='contained'
 								>
-									Create proposal
+									Add proposal
 								</Button>
 								<br />
 								<br />
 								<Button
-									onClick={()=>setPage("all")}
+									onClick={() => setPage("competition")}
 									variant='contained'
 								>
-									All  proposals
+									Competitions
 								</Button>
 								<br />
 								<br />
 								<Button
-									onClick={()=>setPage("competition")}
-									variant='contained'
+								onClick={() => setPage("compTemplate")}
+								variant='contained'
 								>
-									Create competition
+								Add competition
 								</Button>
 				</Container>
 			)}

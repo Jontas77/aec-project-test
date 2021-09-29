@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import { Button, TextField } from "@mui/material";
 
 
-const ProposalA = ({ setPage }) => {
+const ProposalTempl = ({ setPage }) => {
 
   const CHARACTER_LIMIT = 255;
 
@@ -140,7 +139,7 @@ const ProposalA = ({ setPage }) => {
             onClick={handleSubmit}
             color='primary'
           >
-            Create Project
+            Add Project
           </Button>
         </div>
       </Container>
@@ -148,4 +147,4 @@ const ProposalA = ({ setPage }) => {
   );
 };
 
-export default ProposalA;
+export default ProposalTempl;

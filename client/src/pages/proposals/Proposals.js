@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const AllProposals = ({ proposals, page, setPage }) => {
+const Proposals = ({ proposals, page, setPage }) => {
   return (
     <div>
       <div>
       <Button
-        onClick={() => setPage('')}
+        onClick={() => setPage("")}
         variant='contained'
       >
         Go back
@@ -21,7 +21,7 @@ const AllProposals = ({ proposals, page, setPage }) => {
             <div className="card mb-3" >
               <div className="row g-0">
                 <div className="col-md-4">
-                    <img src='https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHNvY2lhbCUyMGRldmVsb3BtZW50fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60' className="img-fluid rounded-start" alt="..." />
+                    <img src='https://media.istockphoto.com/photos/teach-kids-how-far-a-little-care-can-go-picture-id974643844?b=1&k=20&m=974643844&s=170667a&w=0&h=Vo_xEoXfrr3sWxwCVGkMite1hp_nemAYNERDvKMBsYA=' className="img-fluid rounded-start" alt="..." />
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
@@ -39,4 +39,4 @@ const AllProposals = ({ proposals, page, setPage }) => {
   );
 };
 
-export default AllProposals;
+export default Proposals;

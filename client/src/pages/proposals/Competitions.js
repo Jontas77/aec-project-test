@@ -1,25 +1,18 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 
 const Competitions = ({ page, setPage }) => {
-  const [comp, setComp] = useState(false);
-  const [competitions, setCompetitions] = useState([]);
 
-  const handleClick = () => {
-    setComp(true);
-  };
+  const [competitions, setCompetitions] = useState([]);
 
   const getCompetitions = async () => {
     try {
-      const response = await fetch("/api/student/competitions", {
-        method: "GET",
-        headers: { token: localStorage.token },
-      });
-
-      const parseResponse = await response.json();
-
-      setCompetitions(parseResponse);
+      const response = await axios.get("/api/competition");
+      const data = response.data;
+      console.log(data);
+      setCompetitions(data);
     } catch (error) {
       console.error(error.message);
     }
@@ -27,40 +20,44 @@ const Competitions = ({ page, setPage }) => {
 
   useEffect(() => {
     getCompetitions();
-  }, []);
+  }, [page]);
+
 
   return (
-    <>
-      <div className="project-container">
-        <div className="projects-sidebar">
-          <h2 className="mb-5">Competitions</h2>
-          <div className="back">
-            <i className="fas fa-arrow-left" onClick={() => setPage("")}>
-              {"  "}Go Back
-            </i>
+        <div>
+          <div>
+            <Button
+              onClick={() => setPage("")}
+              variant='contained'
+            >
+              Go back
+            </Button>
           </div>
-          <div className="new-project">
-            <i className="fas fa-plus" onClick={handleClick}>
-              {"  "}Add New Proposal
-            </i>
-          </div>
+            <br />
+            <br />
+            {competitions.map(({ comp_desc, contact_pers }) => {
+            return (page === "" ? (
+              <h3>--No competitions to display--</h3>
+            ) : (
+              <div key={comp_desc}>
+                <div className="card mb-3" >
+                  <div className="row g-0">
+                    <div className="col-md-4">
+                        <img src='https://media.istockphoto.com/photos/weve-each-got-our-own-dreams-to-nurture-picture-id928855698?b=1&k=20&m=928855698&s=170667a&w=0&h=SFBkvgsUgNF6ANXRKi_JEq4ejUNAtSzbnp05BEUwpUY=' className="img-fluid rounded-start" alt="..." />
+                    </div>
+                    <div className="col-md-8">
+                      <div className="card-body">
+                        <h5 className="card-title">{contact_pers}</h5>
+                        <p className="card-text">{comp_desc}</p>
+                        {/* <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ));
+          })}
         </div>
-        <div className="projects-main">
-          {comp === true ? <AddProposal /> : (!competitions ? (<h3>--No competitions to display--</h3>) : (competitions.map((comp, idx) => {
-            return (
-              <ul key={idx}>
-                <li style={{ listStyle: "none", textAlign: "center" }}>
-                  <h2>{comp.title}</h2>
-                </li>
-                <li style={{ listStyle: "none" }}>{comp.description}</li>
-                <li style={{ listStyle: "none" }}>Contact: {comp.contact}</li>
-              </ul>
-            );
-          })
-          ))}
-        </div>
-      </div>
-    </>
   );
 };
 

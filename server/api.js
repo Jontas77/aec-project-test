@@ -28,4 +28,25 @@ router.get("/proposal", async (req, res) => {
 	}
 });
 
+// ADD NEW COMPETITION
+router.post("/competition", async (req, res) => {
+	try {
+		const { comp_desc, contact_pers } = req.body;
+		const newCompetition = await pool.query('INSERT INTO competitions (comp_desc, contact_pers) VALUES ($1,$2) RETURNING *', [comp_desc, contact_pers]);
+		res.json({ proposal: newCompetition });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// GET ALL COMPETITIONS
+router.get("/competition", async (req, res) => {
+	try {
+		const competitions = await pool.query('SELECT * FROM competitions');
+		res.json(competitions.rows);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
 export default router;
