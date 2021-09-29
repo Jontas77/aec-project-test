@@ -8,45 +8,53 @@ const ProposalA = ({ setPage }) => {
 
   const CHARACTER_LIMIT = 255;
 
-  const [projectName, setProjectName] = useState("");
-  const [projectTargetGroup, setProjectTargetGroup] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projects, setProjects] = useState([]);
+  const [proposalName, setProposalName] = useState("");
+  const [problemStatement, setProblemStatement] = useState("");
+  const [proposedAction, setProposedAction] = useState("");
+  const [expectedResult, setExpectedResult] = useState("");
+  const [proposals, setProposals] = useState([]);
 
-  const project_name = projectName;
-  const project_target_group = projectTargetGroup;
-  const project_description = projectDescription;
+  const proposal_name = proposalName;
+  const problem_statemnt = problemStatement;
+  const proposed_action = proposedAction;
+  const expected_result = expectedResult;
 
-  const handleProjectName = (e) => {
+  const handleProposalName = (e) => {
     e.preventDefault();
-    setProjectName(e.target.value);
+    setProposalName(e.target.value);
   };
 
-  const handleProjectTargetGroup = (e) => {
+  const handleProblemStatement = (e) => {
     e.preventDefault();
-    setProjectTargetGroup(e.target.value);
+    setProblemStatement(e.target.value);
   };
 
-  const handleProjectDescription = (e) => {
+  const handleProposedAction = (e) => {
     e.preventDefault();
-    setProjectDescription(e.target.value);
+    setProposedAction(e.target.value);
+  };
+
+  const handleExpectedResult = (e) => {
+    e.preventDefault();
+    setExpectedResult(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { project_name, project_target_group, project_description };
+      const body = { proposal_name, problem_statemnt, proposed_action, expected_result };
 
-      const res = await fetch("/api/project", {
+      const res = await fetch("/api/proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      setProjects([...projects, res]);
-      setProjectName("");
-      setProjectTargetGroup("");
-      setProjectDescription("");
+      setProposals([...proposals, res]);
+      setProposalName("");
+      setProblemStatement("");
+      setProposedAction("");
+      setExpectedResult("");
       setPage("");
 
     } catch (error) {
@@ -71,40 +79,56 @@ const ProposalA = ({ setPage }) => {
         <TextField
           required
           id="project-name"
-          label="Project Name"
-          placeholder="What is the name of your project?"
+          label="Project name"
+          placeholder="What is the name of your proposal?"
           variant="outlined"
           style={{ width: "100%" }}
-          value={projectName}
-          onChange={handleProjectName}
+          value={proposalName}
+          onChange={handleProposalName}
         />
         <br />
         <br />
         <TextField
           required
           id="outlined-basic"
-          label="Who"
+          label="Problem statement"
           variant="outlined"
-          placeholder='Who are you trying to help?'
+          placeholder='What problem are you trying to solve?'
           style={{ width: "100%" }}
-          value={projectTargetGroup}
-          onChange={handleProjectTargetGroup}
+          value={problemStatement}
+          onChange={handleProblemStatement}
         />
         <br />
         <br />
         <TextField
           required
           id="outlined-multiline-static"
-          label="Problem"
-          placeholder='Tell us about the problem you want to solve...'
+          label="Proposed action"
+          placeholder='How are you going to solve the problem?'
           multiline
           rows={5}
           inputProps={{
             maxLength: CHARACTER_LIMIT,
           }}
           style={{ width: "100%" }}
-          value={projectDescription}
-          onChange={handleProjectDescription}
+          value={proposedAction}
+          onChange={handleProposedAction}
+        />
+        <br />
+        <br />
+        <TextField
+          required
+          id="outlined-multiline-static"
+          label="Expected result"
+          placeholder='What are you hoping to achieve?'
+          multiline
+          rows={5}
+          inputProps={{
+            maxLength: CHARACTER_LIMIT,
+          }}
+          style={{ width: "100%" }}
+          value={expectedResult}
+          onChange={handleExpectedResult}
         />
         <br />
         <br />
