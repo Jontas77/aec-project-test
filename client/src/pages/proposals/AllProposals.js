@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const AllProjects = ({ projects, project, setPage }) => {
+const AllProposals = ({ proposals, page, setPage }) => {
   return (
     <div>
       <div>
@@ -9,13 +9,13 @@ const AllProjects = ({ projects, project, setPage }) => {
         onClick={() => setPage('')}
         variant='contained'
       >
-        Back
+        Go back
       </Button>
       </div>
       <br />
-      {projects.map(({ project_name, project_description, project_image, project_target_group }) => {
-        return project === "" ? (
-          <h3>--No projects to display--</h3>
+      {proposals.map(({ project_name, project_description, project_image, project_target_group }) => {
+        return page === "" ? (
+          <h3>--No proposals to display--</h3>
         ) : (
           <div key={project_name}>
             <div className="card mb-3" >
@@ -39,4 +39,4 @@ const AllProjects = ({ projects, project, setPage }) => {
   );
 };
 
-export default AllProjects;
+export default AllProposals;

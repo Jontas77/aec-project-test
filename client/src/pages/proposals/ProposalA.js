@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import { Button, TextField } from "@mui/material";
 
 
-const ProjectTemplate = ({ setPage }) => {
+const ProposalA = ({ setPage }) => {
 
   const CHARACTER_LIMIT = 255;
 
@@ -124,4 +124,4 @@ const ProjectTemplate = ({ setPage }) => {
   );
 };
 
-export default ProjectTemplate;
+export default ProposalA;

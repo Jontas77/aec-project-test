@@ -8,21 +8,21 @@ router.get("/", (_, res) => {
 });
 
 // ADD NEW PROJECT
-router.post("/project", async (req, res) => {
+router.post("/proposal", async (req, res) => {
 	try {
 		const { project_name, project_target_group, project_description } = req.body;
-		const newProject = await pool.query('INSERT INTO projects (project_name, project_target_group, project_description) VALUES ($1,$2,$3) RETURNING *', [project_name, project_target_group, project_description]);
-		res.json({ projects: newProject });
+		const newProposal = await pool.query('INSERT INTO projects (project_name, project_target_group, project_description) VALUES ($1,$2,$3) RETURNING *', [project_name, project_target_group, project_description]);
+		res.json({ proposal: newProposal });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
 });
 
 // GET ALL PROJECTS
-router.get("/project", async (req, res) => {
+router.get("/proposal", async (req, res) => {
 	try {
-		const projects = await pool.query('SELECT * FROM projects');
-		res.json(projects.rows);
+		const proposals = await pool.query('SELECT * FROM projects');
+		res.json(proposals.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
