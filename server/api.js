@@ -18,10 +18,10 @@ router.post("/proposal", async (req, res) => {
 	}
 });
 
-// GET ALL PROJECTS
+// GET ALL PROPOSALS
 router.get("/proposal", async (req, res) => {
 	try {
-		const proposals = await pool.query('SELECT * FROM projects');
+		const proposals = await pool.query('SELECT * FROM proposals');
 		res.json(proposals.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
