@@ -1,24 +1,34 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from "react";
-import HeaderDash from "./dashComponents/HeaderDash";
+//import HeaderDash from "./dashComponents/HeaderDash";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
 
 import Profile from "./dashComponents/Profile";
+import AccountSettings from "./dashComponents/AccountSettings";
+import EditProfile from "./dashComponents/EditProfile";
 import Projects from "./dashComponents/Projects";
 import Competitions from "./dashComponents/Compititions";
 
-const StudentDashboard = ({ setAuth }) => {
+
+
+const StudentDashboard = (props) => {
 	const [name, setName] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
+	const [profileInfo, setProfileInfo] = useState({});
 
 	const getName = async () => {
 		try {
-			const response = await fetch("/auth/student/dashboard", {
+			/*const response = await fetch("/auth/student/dashboard", {
 				method: "GET",
 				headers: { token: localStorage.token },
+			});*/
+
+			const response = await fetch("/auth/student/dashboard", {
+				method: "GET",
+				headers: { token: props.user.user_id },
 			});
 
 			const parseRes = await response.json();
@@ -31,32 +41,45 @@ const StudentDashboard = ({ setAuth }) => {
 
 	useEffect(() => {
 		getName();
+		props.changeNotifications(7);
 	}, []);
 
 	const logout = (e) => {
 		e.preventDefault();
 		localStorage.removeItem("token");
-		setAuth(false);
+		props.setAuth(false);
 
 		toast.success("Logged out successfully!");
 	};
 
 	return (
 		<>
-			<HeaderDash logout={logout} />
+			{/*<HeaderDash logout={logout} />*/}
 			<div className="container container-fluid no-padding">
-				<div className="introduction">
-					<h1>Student Dashboard</h1>
-					<h2>Welcome Back {name}</h2>
-				</div>
 				{page === "profile" ? (
-					<Profile />
+					<Profile
+						setPage={setPage}
+						setProfileInfo={setProfileInfo}
+						profileInfo={profileInfo}
+					/>
+				) : page === "edit_profile" ? (
+					<EditProfile
+						setPage={setPage}
+						setProfileInfo={setProfileInfo}
+						profileInfo={profileInfo}
+					/>
+				) : page === "account_settings" ? (
+					<AccountSettings setPage={setPage} />
 				) : page === "projects" ? (
 					<Projects setPage={setPage} />
 				) : page === "competitions" ? (
 					<Competitions setPage={setPage} />
 				) : (
 					<>
+						<div className="introduction">
+							<h1>Student Dashboard</h1>
+							<h2>Welcome Back {name}</h2>
+						</div>
 						<div className="display">--No Feedback to Display--</div>
 						<div className="links-wrapper">
 							<div className="links">
