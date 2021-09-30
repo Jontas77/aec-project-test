@@ -15,7 +15,7 @@ const AdminDashboard = ({ setAuth }) => {
 
 	const getProposals = async () => {
 		try {
-			const response = await axios.get("/api/proposal");
+			const response = await axios.get("/api/project");
 			const data = response.data;
 			console.log(data);
 			setProposals(data);
@@ -63,7 +63,7 @@ const AdminDashboard = ({ setAuth }) => {
 									onClick={() => setPage("all")}
 									variant='contained'
 								>
-									Proposals
+									Projects
 								</Button>
 								<br />
 								<br />
@@ -71,7 +71,7 @@ const AdminDashboard = ({ setAuth }) => {
 									onClick={()=>setPage("proposal")}
 									variant='contained'
 								>
-									Add proposal
+									Add project
 								</Button>
 								<br />
 								<br />

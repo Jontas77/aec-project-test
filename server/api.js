@@ -8,27 +8,27 @@ router.get("/", (_, res) => {
 	res.json({ message: "Welcome to Stellenbosch University" });
 });
 
-// ADD NEW PROPOSAL
-router.post("/proposal", async (req, res) => {
+// ADD NEW PROJECT
+router.post("/project", async (req, res) => {
 	try {
 		const {
-			proposal_name,
-			problem_statemnt,
+			project_name,
+			problem_statement,
 			proposed_action,
 			expected_result,
 		} = req.body;
 		const newProposal = await pool.query(
-			"INSERT INTO proposals (proposal_name, problem_statemnt, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *",
-			[proposal_name, problem_statemnt, proposed_action, expected_result]
+			"INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *",
+			[project_name, problem_statement, proposed_action, expected_result]
 		);
-		res.json({ proposal: newProposal });
+		res.json({ projects: newProposal });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
 });
 
-// GET ALL PROPOSALS
-router.get("/proposal", async (req, res) => {
+// GET ALL PROJECT
+router.get("/project", async (req, res) => {
 	try {
 		const proposals = await pool.query("SELECT * FROM proposals");
 		res.json(proposals.rows);
@@ -82,12 +82,12 @@ router.get("/student/projects", authorization, async (req, res) => {
 // ADD NEW COMPETITION
 router.post("/competition", async (req, res) => {
 	try {
-		const { comp_desc, contact_pers } = req.body;
+		const { comp_title, comp_desc, contact_pers } = req.body;
 		const newCompetition = await pool.query(
-			"INSERT INTO competitions (comp_desc, contact_pers) VALUES ($1,$2) RETURNING *",
-			[comp_desc, contact_pers]
+			"INSERT INTO competitions (comp_title, comp_desc, contact_pers) VALUES ($1,$2,$3) RETURNING *",
+			[comp_title, comp_desc, contact_pers]
 		);
-		res.json({ proposal: newCompetition });
+		res.json({ competitions: newCompetition });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -131,6 +131,90 @@ router.get("/testimonials", async (req, res) => {
 		res
 			.status(500)
 			.json({ message: "Couldn't fetch the testimonials at the moment" });
+	}
+});
+
+router.get("/students_profile/:student_id", async (req, res) => {
+	const { student_id } = req.params;
+	try {
+		const profile = await pool.query(
+			"SELECT * FROM students_profile WHERE student_id = $1",
+			[student_id]
+		);
+		if (profile.rowCount > 0) {
+			res.status(200).json(profile.rows[0]);
+		} else {
+			res.status(404).json({ message: "No information found for the student" , body: profile });
+		}
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "Couldn't fetch the student profile at the moment", error: error });
+	}
+});
+
+router.post("/students_profile", async (req, res) => {
+	const {
+		student_id,
+		student_number,
+		student_phone,
+		student_bio,
+		student_img,
+		student_active,
+	} = req.body;
+	try {
+		await pool.query(
+			"INSERT INTO students_profile (student_id, student_number, student_phone, student_bio, student_img, student_active) VALUES ($1, $2, $3, $4, $5, $6)",
+			[
+				student_id,
+				student_number,
+				student_phone,
+				student_bio,
+				student_img,
+				student_active,
+			]
+		);
+
+			res.status(200).json({ message: "Ok" });
+	} catch (error) {
+		res
+			.status(500)
+			.json({
+				message: "Couldn't post the student profile at the moment",
+				error: error,
+			});
+	}
+});
+
+router.put("/students_profile", async (req, res) => {
+	const {
+		student_id,
+		student_number,
+		student_phone,
+		student_bio,
+		student_img,
+		student_active,
+	} = req.body;
+	console.log(req.body);
+	try {
+		await pool.query(
+			"UPDATE students_profile SET student_number = $1, student_phone = $2, student_bio = $3, student_img = $4, student_active = $5 WHERE student_id = $6",
+			[
+				student_number,
+				student_phone,
+				student_bio,
+				student_img,
+				student_active,
+				student_id,
+			]
+		);
+
+		res.status(200).json({ message: "Ok" });
+	} catch (error) {
+		res.status(500).json({
+			message: "Couldn't update the student profile at the moment",
+			error: error,
+		});
 	}
 });
 

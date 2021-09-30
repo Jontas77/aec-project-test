@@ -7,35 +7,69 @@ import EditIcon from "@mui/icons-material/Edit";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PreviewIcon from "@mui/icons-material/Preview";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import BackIcon from "@mui/icons-material/ArrowBack";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { pascalCase } from "../../../components/services/utils";
 
-const StudentProfile = ({
-	setPage,
-	profileInfo,
-	setProfileInfo,
-	basicInfo,
-}) => {
+const StudentProfile = ({ setPage, id, setInfo }) => {
+	const [profileInfo, setProfileInfo] = useState({});
 	const [projects, setProjects] = useState([]);
 	const [projectsId, setProjectsId] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState({ state: false, message: "" });
 
 	useEffect(() => {
-		const getProfileInfo = () => {
-			const fetchedStudentInfo = {
-				student_name: basicInfo?.student_name || "Douglas CodeBreaker",
-				student_email: basicInfo?.student_email || "douglas@sun.ac.za",
-				student_number: 66827908,
-				student_phone: 773456789,
-				student_bio:
-					"Obsessed with books reading/writing | Free thinker | Digital Economy & Digital Labour Markets Researcher",
+		const getProfileInfo = async () => {
+			const studentInfo = {
+				student_name: "",
+				student_email: "",
+				student_number: null,
+				student_phone: null,
+				student_bio: "--No info...",
 				student_img: "",
-				student_active: false,
+				student_active: true,
 			};
-			setProfileInfo(fetchedStudentInfo);
+
+			try {
+				const response = await fetch("/auth/student/dashboard", {
+					method: "GET",
+					headers: { token: localStorage.token },
+				});
+				const parseRes = await response.json();
+				if (response.status !== 200) {
+					alert(parseRes);
+				} else {
+					const student = parseRes[0];
+					studentInfo.student_name = student.student_name;
+					studentInfo.student_email = student.student_email;
+				}
+			} catch (error) {
+				console.error(error.message);
+			}
+
+			try {
+				const res = await fetch(`/api/students_profile/${id}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" },
+				});
+				const body = await res.json();
+				if (res.status !== 200) {
+					//alert(body.message);
+				} else {
+					studentInfo.student_number = body.student_number;
+					studentInfo.student_phone = body.student_phone;
+					studentInfo.student_bio = body.student_bio;
+					studentInfo.student_img = body.student_img;
+					studentInfo.student_active = body.student_active;
+				}
+			} catch (error) {
+				console.error(error.message);
+			}
+			setProfileInfo(studentInfo);
+			setInfo(studentInfo);
+			localStorage.setItem("profile", JSON.stringify(studentInfo));
 		};
 		getProfileInfo();
 		setLoading(false);
@@ -55,14 +89,7 @@ const StudentProfile = ({
 
 	return (
 		<>
-			<div
-				className="back"
-				onClick={() => setPage("")}
-				style={{ fontWeight: "600", cursor: "pointer" }}
-			>
-				<ArrowBackIcon />
-				Go Back
-			</div>
+			<NavContainer setPage={setPage} />
 			{loading ? (
 				<Loading />
 			) : error.state ? (
@@ -124,7 +151,7 @@ const MainContainer = styled.div`
 	width: 100%;
 	min-height: 90vh;
 	padding-bottom: 1rem;
-	margin-top: 2rem;
+	margin-top: 0.5rem;
 
 	overflow-x: hidden;
 
@@ -507,3 +534,18 @@ const ViewButton = styled.div`
           align-items: center;
           cursor: pointer;
         }}`;
+
+const NavContainer = ({ setPage }) => {
+	return (
+		<Box sx={{ marginTop: "1.2rem", marginLeft: "1rem" }}>
+			<Button
+				variant="contained"
+				sx={{ textTransform: "none" }}
+				onClick={() => setPage("")}
+			>
+				<BackIcon />
+				<Typography sx={{ marginLeft: "0.3rem" }}>Back to Dashboard</Typography>
+			</Button>
+		</Box>
+	);
+};
