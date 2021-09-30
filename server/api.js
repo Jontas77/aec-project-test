@@ -31,9 +31,9 @@ router.get("/proposal", async (req, res) => {
 // ADD NEW COMPETITION
 router.post("/competition", async (req, res) => {
 	try {
-		const { comp_desc, contact_pers } = req.body;
-		const newCompetition = await pool.query('INSERT INTO competitions (comp_desc, contact_pers) VALUES ($1,$2) RETURNING *', [comp_desc, contact_pers]);
-		res.json({ proposal: newCompetition });
+		const { comp_title, comp_desc, contact_pers } = req.body;
+		const newCompetition = await pool.query('INSERT INTO competitions (comp_title, comp_desc, contact_pers) VALUES ($1,$2,$3) RETURNING *', [comp_title, comp_desc, contact_pers]);
+		res.json({ competitions: newCompetition });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}

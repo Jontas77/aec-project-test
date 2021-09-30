@@ -35,7 +35,7 @@ const Competitions = ({ page, setPage }) => {
           </div>
             <br />
             <br />
-            {competitions.map(({ comp_desc, contact_pers }) => {
+            {competitions.map(({ comp_title, comp_desc, contact_pers }) => {
             return (page === "" ? (
               <h3>--No competitions to display--</h3>
             ) : (
@@ -47,8 +47,9 @@ const Competitions = ({ page, setPage }) => {
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
-                        <h5 className="card-title">{contact_pers}</h5>
+                        <h5 className="card-title">{comp_title}</h5>
                         <p className="card-text">{comp_desc}</p>
+                        <h5 className="card-title">{contact_pers}</h5>
                         {/* <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p> */}
                       </div>
                     </div>
