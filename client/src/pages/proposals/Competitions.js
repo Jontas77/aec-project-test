@@ -42,7 +42,7 @@ const Competitions = ({ page, setPage }) => {
                 <th scope="col">#</th>
               <th scope="col">Title</th>
               <th scope="col">Description</th>
-              <th scope="col">Contact person</th>>
+              <th scope="col">Contact person</th>
             </tr>
           </thead>
             {competitions.map(({ comp_title, comp_desc, contact_pers }, index) => {
