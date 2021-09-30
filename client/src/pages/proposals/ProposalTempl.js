@@ -43,7 +43,7 @@ const ProposalTempl = ({ setPage }) => {
     try {
       const body = { proposal_name, problem_statemnt, proposed_action, expected_result };
 
-      const res = await fetch("/api/proposal", {
+      const res = await fetch("/api/project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
