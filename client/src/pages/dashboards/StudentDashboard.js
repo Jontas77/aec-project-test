@@ -14,26 +14,21 @@ import Competitions from "./dashComponents/Compititions";
 
 
 const StudentDashboard = (props) => {
-	const [name, setName] = useState("");
+	//const [name, setName] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
 	const [profileInfo, setProfileInfo] = useState({});
+	const [basicInfo, setBasicInfo] = useState({});
 
 	const getName = async () => {
 		try {
-			/*const response = await fetch("/auth/student/dashboard", {
-				method: "GET",
-				headers: { token: localStorage.token },
-			});*/
-
 			const response = await fetch("/auth/student/dashboard", {
 				method: "GET",
-				headers: { token: props.user.user_id },
+				headers: { token: localStorage.token },
 			});
-
 			const parseRes = await response.json();
-
-			setName(parseRes[0].student_name);
+			//setName(parseRes[0].student_name);
+			setBasicInfo(parseRes[0]);
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -41,7 +36,7 @@ const StudentDashboard = (props) => {
 
 	useEffect(() => {
 		getName();
-		props.changeNotifications(7);
+		//props.changeNotifications(7);
 	}, []);
 
 	const logout = (e) => {
@@ -61,6 +56,7 @@ const StudentDashboard = (props) => {
 						setPage={setPage}
 						setProfileInfo={setProfileInfo}
 						profileInfo={profileInfo}
+						basicInfo={basicInfo}
 					/>
 				) : page === "edit_profile" ? (
 					<EditProfile
@@ -78,7 +74,7 @@ const StudentDashboard = (props) => {
 					<>
 						<div className="introduction">
 							<h1>Student Dashboard</h1>
-							<h2>Welcome Back {name}</h2>
+							<h2>Welcome Back {basicInfo?.student_name}</h2>
 						</div>
 						<div className="display">--No Feedback to Display--</div>
 						<div className="links-wrapper">

@@ -7,7 +7,7 @@ const headersData = {
 		},
 		{
 			label: "Sign Up",
-			href: "/sign-up",
+			href: "/student/sign-up",
 			id: 4,
 		},
 		{
