@@ -13,7 +13,8 @@ const Proposals = ({ proposals, page, setPage }) => {
       </Button>
       </div>
       <br />
-        <table className="table">
+      <table className="table table-hover">
+        <caption>List of Projects</caption>
           <thead>
             <tr>
                 <th scope="col">#</th>
