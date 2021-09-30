@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	Box,
 	Button,
@@ -14,16 +14,17 @@ import SendIcon from "@mui/icons-material/Send";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { withSnackbar } from "notistack";
 
-const EditStudentProfile = ({ setPage, profileInfo }) => {
+const EditStudentProfile = (props) => {
+	const { setPage, id, info } = props;
 	const [values, setValues] = useState({
-		student_name: profileInfo?.student_name || "",
-		student_number: profileInfo?.student_number || null,
-		student_email: profileInfo?.student_email || "",
-		student_phone: profileInfo?.student_phone || null,
-		student_bio: profileInfo?.student_bio || "",
+		student_name: info?.student_name || "",
+		student_number: info?.student_number || "",
+		student_email: info?.student_email || "",
+		student_phone: info?.student_phone || "",
+		student_bio: info?.student_bio || "",
 	});
 
-	const saveProfileInfo = () => {
+	const saveProfileInfo = async () => {
 		if (
 			values.student_name &&
 			values.student_number &&
@@ -33,13 +34,59 @@ const EditStudentProfile = ({ setPage, profileInfo }) => {
 		) {
 			sendInfoToServer();
 		} else {
-			//props.enqueueSnackbar("Please provide all fields", { variant: "error" });
+			props.enqueueSnackbar("Please provide all fields", { variant: "error" });
 		}
 	};
 
 	const sendInfoToServer = async () => {
-    setPage("profile");
-  };
+		if (info.student_number) {
+			const res = await fetch("/api/students_profile", {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					student_id: id,
+					student_number: values.student_number,
+					student_phone: values.student_phone,
+					student_bio: values.student_bio,
+					student_img: "#",
+					student_active: true,
+				}),
+			});
+			const body = await res.json();
+			if (res.status !== 200) {
+				alert(body.message);
+			} else {
+				localStorage.setItem("profile", JSON.stringify(values));
+				props.enqueueSnackbar("Saved sucessfully!", {
+					variant: "success",
+				});
+				setPage("profile");
+			}
+		} else {
+			const res = await fetch("/api/students_profile", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					student_id: id,
+					student_number: values.student_number,
+					student_phone: values.student_phone,
+					student_bio: values.student_bio,
+					student_img: "#",
+					student_active: true,
+				}),
+			});
+			const body = await res.json();
+			if (res.status !== 200) {
+				alert(body.message);
+			} else {
+				localStorage.setItem("profile", JSON.stringify(values));
+				props.enqueueSnackbar("Saved sucessfully!", {
+					variant: "success",
+				});
+				setPage("profile");
+			}
+		}
+	};
 
 	const handleChange = (event) => {
 		setValues({
@@ -141,6 +188,9 @@ const EditStudentProfile = ({ setPage, profileInfo }) => {
 							sx={{ marginRight: "1rem" }}
 							endIcon={<CancelIcon />}
 							onClick={() => {
+								props.enqueueSnackbar("Changes were discarded!", {
+									variant: "error",
+								});
 								setPage("profile");
 							}}
 						>
