@@ -22,7 +22,7 @@ const MentorDashboard = ({ setAuth }) => {
 	useEffect(() => {
 		getProposals();
 	}, [page]);
-	
+
 
 	return (
 		<div>
@@ -48,9 +48,9 @@ const MentorDashboard = ({ setAuth }) => {
 								<th scope="col">Project status</th>
 							</tr>
 						</thead>
-						{proposals.map(({ project_name, problem_statement, proposed_action, expected_result, project_status }, index) => {
+						{proposals.map(({ project_id, project_name, problem_statement, proposed_action, expected_result, project_status }, index) => {
 							return (
-								<tbody>
+								<tbody key={project_id}>
 									<tr>
 										<th scope="row">{index + 1}</th>
 										<td>{project_name}</td>
@@ -60,7 +60,7 @@ const MentorDashboard = ({ setAuth }) => {
 										<td>{project_status}</td>
 									</tr>
 								</tbody>
-							)
+							);
 						})}
 					</table>
 						</div>
