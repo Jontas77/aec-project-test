@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box, Button, Divider, Typography } from "@mui/material";
@@ -7,6 +9,7 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { pascalCase } from "../../../components/services/utils";
 
 const StudentProfile = ({
@@ -36,7 +39,7 @@ const StudentProfile = ({
 		};
 		getProfileInfo();
 		setLoading(false);
-	}, []);
+	}, [basicInfo?.student_name, basicInfo?.student_email, setProfileInfo]);
 
 	const handleProjectView = (event) => {
 		event.preventDefault();
@@ -52,6 +55,14 @@ const StudentProfile = ({
 
 	return (
 		<>
+			<div
+				className="back"
+				onClick={() => setPage("")}
+				style={{ fontWeight: "600", cursor: "pointer" }}
+			>
+				<ArrowBackIcon />
+				Go Back
+			</div>
 			{loading ? (
 				<Loading />
 			) : error.state ? (
