@@ -13,28 +13,33 @@ const Proposals = ({ proposals, page, setPage }) => {
       </Button>
       </div>
       <br />
-      {proposals.map(({ proposal_name, problem_statemnt }) => {
-        return (page === "" ? (
-          <h3>--No proposals to display--</h3>
-        ) : (
-          <div key={proposal_name}>
-            <div className="card mb-3" >
-              <div className="row g-0">
-                <div className="col-md-4">
-                    <img src='https://media.istockphoto.com/photos/teach-kids-how-far-a-little-care-can-go-picture-id974643844?b=1&k=20&m=974643844&s=170667a&w=0&h=Vo_xEoXfrr3sWxwCVGkMite1hp_nemAYNERDvKMBsYA=' className="img-fluid rounded-start" alt="..." />
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <h5 className="card-title">{proposal_name}</h5>
-                    <p className="card-text">{problem_statemnt}</p>
-                    {/* <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ));
-      })}
+        <table className="table">
+          <thead>
+            <tr>
+                <th scope="col">#</th>
+              <th scope="col">Project name</th>
+              <th scope="col">Problem statement</th>
+              <th scope="col">Proposed action</th>
+              <th scope="col">Expected result</th>
+            </tr>
+          </thead>
+        {proposals.map(({ project_name, problem_statement, proposed_action, expected_result }, index) => {
+          return (page === "" ? (
+            <h3>--No projects to display--</h3>
+          ) : (
+            <tbody>
+              <tr>
+                <th scope="row">{index + 1}</th>
+                <td>{project_name}</td>
+                <td>{problem_statement}</td>
+                <td>{proposed_action}</td>
+                <td>{expected_result}</td>
+              </tr>
+            </tbody>
+          ));
+        }
+        )}
+        </table>
     </div>
   );
 };
