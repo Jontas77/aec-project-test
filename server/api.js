@@ -7,22 +7,22 @@ router.get("/", (_, res) => {
 	res.json({ message: "Welcome to Stellenbosch University" });
 });
 
-// ADD NEW PROPOSAL
-router.post("/proposal", async (req, res) => {
+// ADD NEW PROJECT
+router.post("/project", async (req, res) => {
 	try {
-		const { proposal_name, problem_statemnt, proposed_action, expected_result } = req.body;
-		const newProposal = await pool.query('INSERT INTO proposals (proposal_name, problem_statemnt, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *', [proposal_name, problem_statemnt, proposed_action, expected_result]);
+		const { project_name, problem_statement, proposed_action, expected_result } = req.body;
+		const newProposal = await pool.query('INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *', [project_name, problem_statement, proposed_action, expected_result]);
 		res.json({ proposal: newProposal });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
 });
 
-// GET ALL PROPOSALS
-router.get("/proposal", async (req, res) => {
+// GET ALL PROJECT
+router.get("/project", async (req, res) => {
 	try {
-		const proposals = await pool.query('SELECT * FROM proposals');
-		res.json(proposals.rows);
+		const projects = await pool.query('SELECT * FROM projects');
+		res.json(projects.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
