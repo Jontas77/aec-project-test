@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from "react";
 //import HeaderDash from "./dashComponents/HeaderDash";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "./Dashboard.css";
 
 import Profile from "./dashComponents/Profile";
@@ -10,10 +10,14 @@ import AccountSettings from "./dashComponents/AccountSettings";
 import EditProfile from "./dashComponents/EditProfile";
 import Projects from "./dashComponents/Projects";
 import Competitions from "./dashComponents/Compititions";
+import ProjectTable from "./dashComponents/ProjectTable";
+import PersonIcon from "@mui/icons-material/Person";
+import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
 
 
 
-const StudentDashboard = (props) => {
+const StudentDashboard = () => {
 	//const [name, setName] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
@@ -39,13 +43,13 @@ const StudentDashboard = (props) => {
 		//props.changeNotifications(7);
 	}, []);
 
-	const logout = (e) => {
-		e.preventDefault();
-		localStorage.removeItem("token");
-		props.setAuth(false);
+	// const logout = (e) => {
+	// 	e.preventDefault();
+	// 	localStorage.removeItem("token");
+	// 	props.setAuth(false);
 
-		toast.success("Logged out successfully!");
-	};
+	// 	toast.success("Logged out successfully!");
+	// };
 
 	return (
 		<>
@@ -76,23 +80,24 @@ const StudentDashboard = (props) => {
 							<h1>Student Dashboard</h1>
 							<h2>Welcome Back {basicInfo?.student_name}</h2>
 						</div>
-						<div className="display">--No Feedback to Display--</div>
 						<div className="links-wrapper">
 							<div className="links">
 								<div className="profile" onClick={() => setPage("profile")}>
-									<i className="fas fa-user"></i>Profile
+									<PersonIcon style={{ fontSize: "2rem" }} />Profile
 								</div>
 								<div className="projects" onClick={() => setPage("projects")}>
-									<i className="fas fa-project-diagram"></i>Projects
+									<VolunteerActivismIcon style={{ fontSize: "2rem" }} /> Add Project
 								</div>
 								<div
 									className="competitions"
 									onClick={() => setPage("competitions")}
 								>
-									<i className="fas fa-trophy"></i>Competitions
+									<SportsKabaddiIcon style={{ fontSize: "2rem" }} />Competitions
 								</div>
 							</div>
 						</div>
+						<hr />
+						<ProjectTable />
 					</>
 				)}
 			</div>
