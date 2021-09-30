@@ -14,11 +14,11 @@ import Competitions from "./dashComponents/Compititions";
 
 
 const StudentDashboard = (props) => {
-	//const [name, setName] = useState("");
+	const [name, setName] = useState("");
+	const [id, setId] = useState("");
+	const [info, setInfo] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
-	const [profileInfo, setProfileInfo] = useState({});
-	const [basicInfo, setBasicInfo] = useState({});
 
 	const getName = async () => {
 		try {
@@ -27,8 +27,8 @@ const StudentDashboard = (props) => {
 				headers: { token: localStorage.token },
 			});
 			const parseRes = await response.json();
-			//setName(parseRes[0].student_name);
-			setBasicInfo(parseRes[0]);
+			setName(parseRes[0].student_name);
+			setId(parseRes[0].student_id);
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -37,6 +37,18 @@ const StudentDashboard = (props) => {
 	useEffect(() => {
 		getName();
 		//props.changeNotifications(7);
+		let localUserData = localStorage.getItem("profile");
+		//alert(localUserData);
+		if (localUserData) {
+			let userProfile = JSON.parse(localUserData);
+			for (let name in userProfile) {
+				console.log(`${name}: ${userProfile[name]}, `);
+				setInfo({
+					...info,
+					[name]: userProfile[name],
+				});
+			}
+		}
 	}, []);
 
 	const logout = (e) => {
@@ -54,15 +66,14 @@ const StudentDashboard = (props) => {
 				{page === "profile" ? (
 					<Profile
 						setPage={setPage}
-						setProfileInfo={setProfileInfo}
-						profileInfo={profileInfo}
-						basicInfo={basicInfo}
+						id={id}
+						setInfo={setInfo}
 					/>
 				) : page === "edit_profile" ? (
 					<EditProfile
 						setPage={setPage}
-						setProfileInfo={setProfileInfo}
-						profileInfo={profileInfo}
+						id={id}
+						info={info}
 					/>
 				) : page === "account_settings" ? (
 					<AccountSettings setPage={setPage} />
@@ -74,7 +85,7 @@ const StudentDashboard = (props) => {
 					<>
 						<div className="introduction">
 							<h1>Student Dashboard</h1>
-							<h2>Welcome Back {basicInfo?.student_name}</h2>
+							<h2>Welcome Back {name}</h2>
 						</div>
 						<div className="display">--No Feedback to Display--</div>
 						<div className="links-wrapper">

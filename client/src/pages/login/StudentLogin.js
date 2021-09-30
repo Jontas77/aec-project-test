@@ -64,10 +64,9 @@ const StudentLogin = ({ setAuth }) => {
 				{...props}
 			>
 				{"Copyright © "}
-				<Link color="inherit" href="">
+				<Link color="inherit" href="" to="https://github.com/DouglasVDM/aec">
 					The A Team
-				</Link>
-				{" "}
+				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>

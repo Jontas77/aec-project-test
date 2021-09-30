@@ -1,5 +1,5 @@
 import { Router } from "express";
-import pool from './db.js'
+import pool from "./db.js";
 
 const router = new Router();
 
@@ -10,8 +10,16 @@ router.get("/", (_, res) => {
 // ADD NEW PROJECT
 router.post("/project", async (req, res) => {
 	try {
-		const { project_name, problem_statement, proposed_action, expected_result } = req.body;
-		const newProposal = await pool.query('INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *', [project_name, problem_statement, proposed_action, expected_result]);
+		const {
+			project_name,
+			problem_statement,
+			proposed_action,
+			expected_result,
+		} = req.body;
+		const newProposal = await pool.query(
+			"INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *",
+			[project_name, problem_statement, proposed_action, expected_result]
+		);
 		res.json({ projects: newProposal });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -21,7 +29,7 @@ router.post("/project", async (req, res) => {
 // GET ALL PROJECT
 router.get("/project", async (req, res) => {
 	try {
-		const projects = await pool.query('SELECT * FROM projects');
+		const projects = await pool.query("SELECT * FROM projects");
 		res.json(projects.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -32,7 +40,10 @@ router.get("/project", async (req, res) => {
 router.post("/competition", async (req, res) => {
 	try {
 		const { comp_title, comp_desc, contact_pers } = req.body;
-		const newCompetition = await pool.query('INSERT INTO competitions (comp_title, comp_desc, contact_pers) VALUES ($1,$2,$3) RETURNING *', [comp_title, comp_desc, contact_pers]);
+		const newCompetition = await pool.query(
+			"INSERT INTO competitions (comp_title, comp_desc, contact_pers) VALUES ($1,$2,$3) RETURNING *",
+			[comp_title, comp_desc, contact_pers]
+		);
 		res.json({ competitions: newCompetition });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -42,7 +53,7 @@ router.post("/competition", async (req, res) => {
 // GET ALL COMPETITIONS
 router.get("/competition", async (req, res) => {
 	try {
-		const competitions = await pool.query('SELECT * FROM competitions');
+		const competitions = await pool.query("SELECT * FROM competitions");
 		res.json(competitions.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -62,9 +73,7 @@ router.get("/featured_projects", async (req, res) => {
 
 router.get("/meet_the_team", async (req, res) => {
 	try {
-		const theTeam = await pool.query(
-			"SELECT * FROM team"
-		);
+		const theTeam = await pool.query("SELECT * FROM team");
 		res.status(200).json(theTeam.rows);
 	} catch (error) {
 		res.status(500).json({ message: "Couldn't fetch the team at the moment" });
@@ -76,7 +85,93 @@ router.get("/testimonials", async (req, res) => {
 		const testimonials = await pool.query("SELECT * FROM testimonials");
 		res.status(200).json(testimonials.rows);
 	} catch (error) {
-		res.status(500).json({ message: "Couldn't fetch the testimonials at the moment" });
+		res
+			.status(500)
+			.json({ message: "Couldn't fetch the testimonials at the moment" });
+	}
+});
+
+router.get("/students_profile/:student_id", async (req, res) => {
+	const { student_id } = req.params;
+	try {
+		const profile = await pool.query(
+			"SELECT * FROM students_profile WHERE student_id = $1",
+			[student_id]
+		);
+		if (profile.rowCount > 0) {
+			res.status(200).json(profile.rows[0]);
+		} else {
+			res.status(404).json({ message: "No information found for the student" , body: profile });
+		}
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "Couldn't fetch the student profile at the moment", error: error });
+	}
+});
+
+router.post("/students_profile", async (req, res) => {
+	const {
+		student_id,
+		student_number,
+		student_phone,
+		student_bio,
+		student_img,
+		student_active,
+	} = req.body;
+	try {
+		await pool.query(
+			"INSERT INTO students_profile (student_id, student_number, student_phone, student_bio, student_img, student_active) VALUES ($1, $2, $3, $4, $5, $6)",
+			[
+				student_id,
+				student_number,
+				student_phone,
+				student_bio,
+				student_img,
+				student_active,
+			]
+		);
+
+			res.status(200).json({ message: "Ok" });
+	} catch (error) {
+		res
+			.status(500)
+			.json({
+				message: "Couldn't post the student profile at the moment",
+				error: error,
+			});
+	}
+});
+
+router.put("/students_profile", async (req, res) => {
+	const {
+		student_id,
+		student_number,
+		student_phone,
+		student_bio,
+		student_img,
+		student_active,
+	} = req.body;
+	console.log(req.body);
+	try {
+		await pool.query(
+			"UPDATE students_profile SET student_number = $1, student_phone = $2, student_bio = $3, student_img = $4, student_active = $5 WHERE student_id = $6",
+			[
+				student_number,
+				student_phone,
+				student_bio,
+				student_img,
+				student_active,
+				student_id,
+			]
+		);
+
+		res.status(200).json({ message: "Ok" });
+	} catch (error) {
+		res.status(500).json({
+			message: "Couldn't update the student profile at the moment",
+			error: error,
+		});
 	}
 });
 
