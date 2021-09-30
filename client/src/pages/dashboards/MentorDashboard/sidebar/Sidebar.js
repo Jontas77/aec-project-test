@@ -12,6 +12,16 @@ import {
        } from "@mui/icons-material";
 
 const Sidebar = () => {
+
+  // {
+  //   page === "profile" ? (
+  //   <Profile />
+  // ) : page === "projects" ? (
+  //   <Projects setPage={setPage} />
+  // ) : page === "competitions" ? (
+  //   <Competitions setPage={setPage} />
+  // ) : (
+
   return (
     <div className='sidebar'>
       <div className='sidebarWrapper'>
@@ -37,9 +47,9 @@ const Sidebar = () => {
           <AccountTreeSharp />
           Projects</h3>
           <ul className='sidebarList'>
-            <li className='sidebarListItem active'>
-              <FiberNew />
-              New Projects
+            <li className='sidebarListItem active' >
+              <FiberNew onClick={() => setPage("projects")} />
+              Projects
             </li>
             <li className='sidebarListItem active'>
               <HourglassTopRounded />
