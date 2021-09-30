@@ -1,5 +1,6 @@
 .container {
     min-width: 100%;
+	padding: 2rem;
 }
 
 .header-dashboard {
@@ -43,8 +44,10 @@
 
 .links {
 	margin-top: 2rem;
+	margin-bottom: 3rem;
 	display: flex;
 	justify-content: space-around;
+
 }
 
 .logout-btn {
@@ -59,7 +62,8 @@
 .profile,
 .projects,
 .competitions {
-	background-color: #f0ab33;
+	background-color: lightgray;
+	box-shadow: 1px 1px 1px 0px;
 	color: #551b33;
 	border-radius: 2rem;
 	width: 15rem;
@@ -72,6 +76,19 @@
     align-items: center;
     cursor: pointer;
     opacity: 0.9;
+}
+
+.project-table {
+	margin-top: 4rem;
+}
+
+.proj-submit {
+	background-color: #551b33;
+	color: #fff;
+	border-radius: 8px;
+	height: 40px;
+	width: 100px;
+	cursor: pointer;
 }
 
 .fa-user, .fa-project-diagram, .fa-trophy {

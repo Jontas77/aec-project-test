@@ -1,5 +1,6 @@
 import { Router } from "express";
 import pool from "./db.js";
+import authorization from "./jwtMiddleware/authorization";
 
 const router = new Router();
 
@@ -29,12 +30,54 @@ router.post("/project", async (req, res) => {
 // GET ALL PROJECT
 router.get("/project", async (req, res) => {
 	try {
-		const projects = await pool.query("SELECT * FROM projects");
-		res.json(projects.rows);
+		const proposals = await pool.query("SELECT * FROM proposals");
+		res.json(proposals.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
 });
+
+
+// CREATE NEW PROJECT PROPOSAL STEP 1
+router.post("/student/projects", authorization, async (req, res) => {
+	const {
+		project_name,
+		problem_statement,
+		proposed_action,
+		expected_result,
+		project_status = "await feedback",
+	} = req.body;
+	try {
+		await pool.query(
+			"INSERT INTO projects (student_id, project_name, problem_statement, proposed_action, expected_result, project_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+			[
+				req.user,
+				project_name,
+				problem_statement,
+				proposed_action,
+				expected_result,
+				project_status,
+			]
+		);
+		res.json({ status: "success", message: "Project proposal added!" });
+	} catch (error) {
+		console.error(error.message);
+	}
+});
+
+// GET PROJECT PROPOSAL
+router.get("/student/projects", authorization, async (req, res) => {
+	try {
+		const result = await pool.query(
+			"SELECT project_name, problem_statement, proposed_action, expected_result, project_status FROM projects"
+		);
+		res.json(result.rows);
+	} catch (error) {
+		console.error(error.message);
+	}
+});
+
+
 
 // ADD NEW COMPETITION
 router.post("/competition", async (req, res) => {
