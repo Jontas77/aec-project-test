@@ -10,7 +10,7 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { pascalCase } from "../../../components/services/utils";
 
 const StudentProfile = ({ setPage, id, setInfo }) => {
@@ -73,7 +73,7 @@ const StudentProfile = ({ setPage, id, setInfo }) => {
 		};
 		getProfileInfo();
 		setLoading(false);
-	}, [basicInfo?.student_name, basicInfo?.student_email, setProfileInfo]);
+	}, [id, setInfo]);
 
 	const handleProjectView = (event) => {
 		event.preventDefault();
