@@ -13,7 +13,7 @@ const ProposalTempl = ({ setPage }) => {
   const [expectedResult, setExpectedResult] = useState("");
   const [proposals, setProposals] = useState([]);
 
-  const proposal_name = proposalName;
+  const project_name = proposalName;
   const problem_statemnt = problemStatement;
   const proposed_action = proposedAction;
   const expected_result = expectedResult;
@@ -41,7 +41,7 @@ const ProposalTempl = ({ setPage }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { proposal_name, problem_statemnt, proposed_action, expected_result };
+      const body = { project_name, problem_statemnt, proposed_action, expected_result };
 
       const res = await fetch("/api/project", {
         method: "POST",

@@ -12,7 +12,7 @@ router.post("/project", async (req, res) => {
 	try {
 		const { project_name, problem_statement, proposed_action, expected_result } = req.body;
 		const newProposal = await pool.query('INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *', [project_name, problem_statement, proposed_action, expected_result]);
-		res.json({ proposal: newProposal });
+		res.json({ projects: newProposal });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
