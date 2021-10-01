@@ -17,7 +17,6 @@ const AdminDashboard = ({ setAuth }) => {
 		try {
 			const response = await axios.get("/api/project");
 			const data = response.data;
-			console.log(data);
 			setProposals(data);
 		} catch (error) {
 			console.error(error.message);
@@ -40,7 +39,7 @@ const AdminDashboard = ({ setAuth }) => {
 						(<div>
 							<Competitions page={page} setPage={setPage} />
 							</div>
-							) : page === 'mentor' ? (
+							) : page === "mentor" ? (
 								<MentorSignUp setPage={setPage} />
 							) :
 							(<Container style={{ width: "100%" }}>

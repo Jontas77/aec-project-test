@@ -98,9 +98,9 @@ const StudentSignUp = ({ setAuth }) => {
 					>
 						<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
 							<LockOutlinedIcon />
-						</Avatar>
+							</Avatar>
 						<Typography component="h1" variant="h5">
-							Student Register
+							Student Sign up
 						</Typography>
 						<Box
 							component="form"

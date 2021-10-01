@@ -1,72 +1,107 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect } from "react";
-import AddProject from "./AddProject";
+import React, { useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SendIcon from "@mui/icons-material/Send";
 
 const Projects = ({ setPage }) => {
-	const [project, setProject] = useState(false);
-	const [projects, setProjects] = useState([]);
+	const [inputs, setInputs] = useState({
+		project_name: "",
+		problem_statement: "",
+		proposed_action: "",
+		expected_result: "",
+	});
 
-	const handleClick = () => {
-		setProject(true);
+	const handleChange = (e) => {
+		return setInputs((input) => ({
+			...input,
+			[e.target.name]: e.target.value,
+		}));
 	};
 
-	const getProjects = async () => {
+	const { project_name, problem_statement, proposed_action, expected_result } =
+		inputs;
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 		try {
+			const myHeaders = new Headers();
+
+			myHeaders.append("Content-Type", "application/json");
+			myHeaders.append("token", localStorage.token);
+
+			const body = {
+				project_name,
+				problem_statement,
+				proposed_action,
+				expected_result,
+			};
+
 			const response = await fetch("/api/student/projects", {
-				method: "GET",
-				headers: { token: localStorage.token },
+				method: "POST",
+				headers: myHeaders,
+				body: JSON.stringify(body),
 			});
 
 			const parseResponse = await response.json();
-
-			setProjects(parseResponse);
+			console.log(parseResponse);
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
 
-	useEffect(() => {
-		getProjects();
-	}, []);
-
 	return (
 		<>
-			<div className="project-container">
-				<div className="projects-sidebar">
-					<h2 className="mb-5">My Projects</h2>
-					<div className="back">
-						<i className="fas fa-arrow-left" onClick={() => setPage("")}>
-							{"  "}Go Back
-						</i>
-					</div>
-					<div className="new-project">
-						<i className="fas fa-plus" onClick={handleClick}>
-							{"  "}Add Project
-						</i>
-					</div>
-				</div>
-				<div className="projects-main">
-					{project === true ? (
-						<AddProject />
-					) : (
-						projects.map((proj, idx) => {
-							return proj === "" ? (
-								<h3>--No projects to display--</h3>
-							) : (
-								<ul key={idx}>
-									<li style={{ listStyle: "none", textAlign: "center" }}>
-										<h2>{proj.project_name}</h2>
-									</li>
-									<li style={{ listStyle: "none" }}>{proj.project_desc}</li>
-								</ul>
-							);
-						})
-					)}
-				</div>
+			<div
+				className="back"
+				onClick={() => setPage("")}
+				style={{ fontWeight: "600", cursor: "pointer" }}
+			>
+				<ArrowBackIcon />
+				Go Back
 			</div>
+			<h2 className="text-center mt-4">The Project Proposal</h2>
+			<form onSubmit={handleSubmit}>
+				<h6>The Project</h6>
+				<textarea
+					className="form-control mb-4"
+					type="text"
+					name="project_name"
+					value={project_name}
+					onChange={(e) => handleChange(e)}
+				/>
+				<h6>Problem Statement</h6>
+				<textarea
+					className="form-control mb-4"
+					type="text"
+					name="problem_statement"
+					value={problem_statement}
+					onChange={(e) => handleChange(e)}
+				/>
+				<h6>Proposed Action</h6>
+				<textarea
+					className="form-control mb-4"
+					type="text"
+					name="proposed_action"
+					value={proposed_action}
+					onChange={(e) => handleChange(e)}
+				/>
+				<h6>Expected Results</h6>
+				<textarea
+					className="form-control mb-4"
+					type="text"
+					name="expected_result"
+					value={expected_result}
+					onChange={(e) => handleChange(e)}
+				/>
+				<button type="submit" className="proj-submit">
+					Send
+					<SendIcon className="ml-3" />
+				</button>
+			</form>
 		</>
 	);
 };
 
 export default Projects;
+
