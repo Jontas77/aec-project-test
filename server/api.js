@@ -144,12 +144,20 @@ router.get("/students_profile/:student_id", async (req, res) => {
 		if (profile.rowCount > 0) {
 			res.status(200).json(profile.rows[0]);
 		} else {
-			res.status(404).json({ message: "No information found for the student" , body: profile });
+			res
+				.status(404)
+				.json({
+					message: "No information found for the student",
+					body: profile,
+				});
 		}
 	} catch (error) {
 		res
 			.status(500)
-			.json({ message: "Couldn't fetch the student profile at the moment", error: error });
+			.json({
+				message: "Couldn't fetch the student profile at the moment",
+				error: error,
+			});
 	}
 });
 
@@ -162,27 +170,46 @@ router.post("/students_profile", async (req, res) => {
 		student_img,
 		student_active,
 	} = req.body;
+
 	try {
-		await pool.query(
-			"INSERT INTO students_profile (student_id, student_number, student_phone, student_bio, student_img, student_active) VALUES ($1, $2, $3, $4, $5, $6)",
-			[
-				student_id,
-				student_number,
-				student_phone,
-				student_bio,
-				student_img,
-				student_active,
-			]
+		const profile = await pool.query(
+			"SELECT * FROM students_profile WHERE student_id = $1",
+			[student_id]
 		);
+		if (profile.rowCount > 0) {
+			await pool.query(
+				"UPDATE students_profile SET student_number = $1, student_phone = $2, student_bio = $3, student_img = $4, student_active = $5 WHERE student_id = $6",
+				[
+					student_number,
+					student_phone,
+					student_bio,
+					student_img,
+					student_active,
+					student_id,
+				]
+			);
 
 			res.status(200).json({ message: "Ok" });
+		} else {
+			await pool.query(
+				"INSERT INTO students_profile (student_id, student_number, student_phone, student_bio, student_img, student_active) VALUES ($1, $2, $3, $4, $5, $6)",
+				[
+					student_id,
+					student_number,
+					student_phone,
+					student_bio,
+					student_img,
+					student_active,
+				]
+			);
+
+			res.status(200).json({ message: "Ok" });
+		}
 	} catch (error) {
-		res
-			.status(500)
-			.json({
-				message: "Couldn't post the student profile at the moment",
-				error: error,
-			});
+		res.status(500).json({
+			message: "Couldn't fetch the student profile at the moment",
+			error: error,
+		});
 	}
 });
 

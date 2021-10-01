@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
 	Box,
 	Button,
@@ -39,30 +39,6 @@ const EditStudentProfile = (props) => {
 	};
 
 	const sendInfoToServer = async () => {
-		if (info.student_number || info.student_phone || info.student_bio) {
-			const res = await fetch("/api/students_profile", {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					student_id: id,
-					student_number: values.student_number,
-					student_phone: values.student_phone,
-					student_bio: values.student_bio,
-					student_img: "#",
-					student_active: true,
-				}),
-			});
-			const body = await res.json();
-			if (res.status !== 200) {
-				alert(body.message);
-			} else {
-				localStorage.setItem("profile", JSON.stringify(values));
-				props.enqueueSnackbar("Saved sucessfully!", {
-					variant: "success",
-				});
-				setPage("profile");
-			}
-		} else {
 			const res = await fetch("/api/students_profile", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -77,7 +53,9 @@ const EditStudentProfile = (props) => {
 			});
 			const body = await res.json();
 			if (res.status !== 200) {
-				alert(body.message);
+				props.enqueueSnackbar(body.message, {
+					variant: "error",
+				});
 			} else {
 				localStorage.setItem("profile", JSON.stringify(values));
 				props.enqueueSnackbar("Saved sucessfully!", {
@@ -85,7 +63,6 @@ const EditStudentProfile = (props) => {
 				});
 				setPage("profile");
 			}
-		}
 	};
 
 	const handleChange = (event) => {

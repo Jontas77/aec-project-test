@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box, Button, Divider, Typography } from "@mui/material";
@@ -10,7 +8,6 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { pascalCase } from "../../../components/services/utils";
 
 const StudentProfile = ({ setPage, id, setInfo }) => {
@@ -73,7 +70,7 @@ const StudentProfile = ({ setPage, id, setInfo }) => {
 		};
 		getProfileInfo();
 		setLoading(false);
-	}, [basicInfo?.student_name, basicInfo?.student_email, setProfileInfo]);
+	}, []);
 
 	const handleProjectView = (event) => {
 		event.preventDefault();

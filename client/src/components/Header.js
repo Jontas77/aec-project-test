@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import LogInButton from "./header/LogInButton";
-import UserNotifications from "./header/UserNotifications";
 //import theme from '../themes/theme';
 import HEADERS_DATA from "../assets/data/headers_data";
 
@@ -66,7 +65,12 @@ function Header(props) {
 				<LogoImage />
 				<PageTitle />
 				<DesktopMenuItems headers={props.headers} />
-				<MainMenuIcons {...props} setAuth={props.setAuth} isAuthenticated ={props.isAuthenticated} />
+				<MainMenuIcons
+					{...props}
+					setAuth={props.setAuth}
+					isAuthenticated={props.isAuthenticated}
+					changeHeaders={props.changeHeaders}
+				/>
 			</Toolbar>
 		);
 	};
@@ -158,10 +162,10 @@ function Header(props) {
 
 					<LogoImage />
 				</Box>
-				{/* <PageTitle />*/}
 				<MainMenuIcons
 					setAuth={props.setAuth}
 					isAuthenticated={props.isAuthenticated}
+					changeHeaders={props.changeHeaders}
 				/>
 			</Toolbar>
 		);
@@ -236,10 +240,6 @@ function Header(props) {
 			</Stack>
 		);
 	};
-
-	/*const getHeadersData = ({ headers }) => {
-		return headers?.length > 0 ? headers : HEADERS_DATA.home;
-	};*/
 
 	const GetMenuIcon = ({ id }) => {
 		switch (id) {

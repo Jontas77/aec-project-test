@@ -17,7 +17,7 @@ function LogInButton(props) {
 			props.enqueueSnackbar("You have been logged out!", { variant: "error" });
 			localStorage.removeItem("token");
 			props.setAuth(false);
-			//props.changeHeaders(HEADERS_DATA.home);
+			props.changeHeaders(HEADERS_DATA.home);
 			props.history.push("/");
 		} else {
 			setAnchorEl(event.currentTarget);

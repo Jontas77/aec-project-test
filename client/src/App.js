@@ -42,6 +42,7 @@ const App = (props) => {
 					headers={headers}
 					setAuth={setAuth}
 					isAuthenticated={isAuthenticated}
+					changeHeaders={changeHeaders}
 				/>
 				<Switch>
 					<Route
@@ -60,7 +61,11 @@ const App = (props) => {
 						path="/student/login"
 						render={(props) =>
 							!isAuthenticated ? (
-								<StudentLogin {...props} setAuth={setAuth} />
+								<StudentLogin
+									{...props}
+									setAuth={setAuth}
+									changeHeaders={changeHeaders}
+								/>
 							) : (
 								<Redirect to="/student/dashboard" />
 							)
@@ -71,7 +76,11 @@ const App = (props) => {
 						path="/mentor/login"
 						render={(props) =>
 							!isAuthenticated ? (
-								<MentorLogin {...props} setAuth={setAuth} />
+								<MentorLogin
+									{...props}
+									setAuth={setAuth}
+									changeHeaders={changeHeaders}
+								/>
 							) : (
 								<Redirect to="/mentor/dashboard" />
 							)
@@ -82,7 +91,11 @@ const App = (props) => {
 						path="/admin/login"
 						render={(props) =>
 							!isAuthenticated ? (
-								<AdminLogin {...props} setAuth={setAuth} />
+								<AdminLogin
+									{...props}
+									setAuth={setAuth}
+									changeHeaders={changeHeaders}
+								/>
 							) : (
 								<Redirect to="/admin/dashboard" />
 							)
