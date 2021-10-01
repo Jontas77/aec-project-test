@@ -39,7 +39,7 @@ const EditStudentProfile = (props) => {
 	};
 
 	const sendInfoToServer = async () => {
-		if (info.student_number) {
+		if (info.student_number || info.student_phone || info.student_bio) {
 			const res = await fetch("/api/students_profile", {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
