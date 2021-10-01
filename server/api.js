@@ -17,11 +17,11 @@ router.post("/project", async (req, res) => {
 			proposed_action,
 			expected_result,
 		} = req.body;
-		const newProposal = await pool.query(
+		const newProject = await pool.query(
 			"INSERT INTO projects (project_name, problem_statement, proposed_action, expected_result) VALUES ($1,$2,$3,$4) RETURNING *",
 			[project_name, problem_statement, proposed_action, expected_result]
 		);
-		res.json({ projects: newProposal });
+		res.json({ projects: newProject });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -30,8 +30,8 @@ router.post("/project", async (req, res) => {
 // GET ALL PROJECT
 router.get("/project", async (req, res) => {
 	try {
-		const proposals = await pool.query("SELECT * FROM proposals");
-		res.json(proposals.rows);
+		const projects = await pool.query("SELECT * FROM projects");
+		res.json(projects.rows);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
