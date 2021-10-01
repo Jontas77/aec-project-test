@@ -10,7 +10,6 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import Loading from "../../../components/services/Loading";
 import Error from "../../../components/services/Error";
-
 import { pascalCase } from "../../../components/services/utils";
 
 const StudentProfile = ({ setPage, id, setInfo }) => {
