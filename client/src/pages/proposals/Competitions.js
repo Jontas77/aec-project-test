@@ -11,7 +11,6 @@ const Competitions = ({ page, setPage }) => {
     try {
       const response = await axios.get("/api/competition");
       const data = response.data;
-      console.log(data);
       setCompetitions(data);
     } catch (error) {
       console.error(error.message);

@@ -12,7 +12,6 @@ const MentorDashboard = ({ setAuth }) => {
 		try {
 			const response = await axios.get("/api/project");
 			const data = response.data;
-			console.log(data);
 			setProposals(data);
 		} catch (error) {
 			console.error(error.message);
