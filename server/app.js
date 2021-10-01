@@ -16,7 +16,7 @@ import {
 
 const apiRoot = "/api";
 const authRoot = "/auth";
-const staticDir = path.join(__dirname, "static");
+const staticDir = path.join(__dirname, "./static");
 
 const app = express();
 
