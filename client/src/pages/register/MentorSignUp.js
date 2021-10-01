@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,93 +13,82 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const MentorSignUp = ({ setPage }) => {
+const MentorSignUp = ({ setAuth, setPage }) => {
+  const [inputs, setInputs] = useState({
+    mentor_name: "",
+    mentor_email: "",
+    mentor_password: "",
+  });
 
-  const [mentorName, setMentorName] = useState("");
-  const [mentorEmail, setMentorEmail] = useState("");
-  const [mentorPassword, setMentorPassword] = useState("");
-  const [mentor, setMentor] = useState([]);
+  const { mentor_name, mentor_email, mentor_password } = inputs;
 
-  const handleMentorName = (event) => {
-    event.preventDefault();
-    setMentorName(event.target.value);
+  const onChange = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  const handleMentorEmail = (event) => {
-    event.preventDefault();
-    setMentorEmail(event.target.value);
-  };
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
 
-  const handleMentorPassword = (event) => {
-    event.preventDefault();
-    setMentorPassword(event.target.value);
-  };
+    try {
+      const body = { mentor_name, mentor_email, mentor_password };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newMentor = ({
-      mentor_name: mentorName,
-      mentor_email: mentorEmail,
-      mentor_password: mentorPassword,
-    });
+      const response = await fetch("/auth/mentor/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const parseRes = await response.json();
 
-    setMentor([...mentor, newMentor]);
-    setMentorName("");
-    setMentorEmail("");
-    setMentorPassword("");
+      localStorage.setItem("token", parseRes.token);
+
+      if (parseRes.token) {
+        setAuth(true);
+
+        toast.success("Signed Up Successfully");
+      } else {
+        setAuth(false);
+
+        toast.error(parseRes);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const Copyright = (props) => {
     return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
         {"Copyright © "}
-        <Link color="inherit" href="">
+        <Link color="inherit" href="https://github.com/DouglasVDM/aec">
           The A Team
-        </Link>{""}
+        </Link>
+        {""}
         {new Date().getFullYear()}
         {"."}
       </Typography>
     );
   };
 
-  const Mentor = (props) => {
-    return (
-      <div>
-        {mentor?.map((mentor) => {
-          return (
-            <>
-              <Typography variant="body2" color="text.secondary" align="center" {...props}>
-                {`Mentor email: ${mentor.mentor_email}`}
-                <br />
-                {`Mentor password: ${mentor.mentor_password}`}
-              </Typography>
-            </>
-          );
-        }
-        )}
-      </div>
-    );
-  };
-
-  const theme = createTheme();
+  // const theme = createTheme();
 
   return (
     <>
-      <div>
-      <Link to="/">Home</Link>
-        <br />
-        <br />
-        <Button
-          onClick={() => setPage("")}
-          variant='contained'
-        >
-          Back
-        </Button>
-      </div>
-
-      <ThemeProvider theme={theme}>
+      <Container
+        sx={{
+          backgroundImage: "url('/images/background/bg1.png')",
+          maxWidth: "100%",
+          minHeight: "90vh",
+          paddingBottom: "1rem",
+        }}
+      >
+        {/* <ThemeProvider theme={theme}> */}
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -113,12 +103,14 @@ const MentorSignUp = ({ setPage }) => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Mentor sign up
+              Mentor Sign Up
             </Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
-              noValidate sx={{ mt: 1 }}>
+              onSubmit={onSubmitForm}
+              noValidate
+              sx={{ mt: 1 }}
+            >
               {/* MENTOR NAME */}
               <TextField
                 margin="normal"
@@ -126,11 +118,10 @@ const MentorSignUp = ({ setPage }) => {
                 fullWidth
                 id="name"
                 label="Name"
-                name="name"
+                name="mentor_name"
                 autoComplete="name"
-                autoFocus
-                value={mentorName}
-                onChange={handleMentorName}
+                value={mentor_name}
+                onChange={(e) => onChange(e)}
               />
               {/* MENTOR EMAIL */}
               <TextField
@@ -139,24 +130,23 @@ const MentorSignUp = ({ setPage }) => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                name="mentor_email"
                 autoComplete="email"
-                autoFocus
-                value={mentorEmail}
-                onChange={handleMentorEmail}
+                value={mentor_email}
+                onChange={(e) => onChange(e)}
               />
               {/* MENTOR PASSWORD */}
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="mentor_password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={mentorPassword}
-                onChange={handleMentorPassword}
+                value={mentor_password}
+                onChange={(e) => onChange(e)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -167,26 +157,23 @@ const MentorSignUp = ({ setPage }) => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={handleSubmit}
+                onClick={onSubmitForm}
               >
                 Sign up
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <FormLink
-                    href="#"
-                    variant="body2"
-                  >
+                  <FormLink href="#" variant="body2">
                     Forgot password?
                   </FormLink>
                 </Grid>
               </Grid>
             </Box>
           </Box>
-          <Mentor />
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
-      </ThemeProvider>
+        {/* </ThemeProvider> */}
+      </Container>
     </>
   );
 };
