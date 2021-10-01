@@ -42,11 +42,10 @@ const StudentDashboard = (props) => {
 		getName();
 		//props.changeNotifications(7);
 		let localUserData = localStorage.getItem("profile");
-		//alert(localUserData);
 		if (localUserData) {
 			let userProfile = JSON.parse(localUserData);
 			for (let name in userProfile) {
-				console.log(`${name}: ${userProfile[name]}, `);
+				//console.log(`${name}: ${userProfile[name]}, `);
 				setInfo({
 					...info,
 					[name]: userProfile[name],
@@ -55,17 +54,8 @@ const StudentDashboard = (props) => {
 		}
 	}, []);
 
-	// const logout = (e) => {
-	// 	e.preventDefault();
-	// 	localStorage.removeItem("token");
-	// 	props.setAuth(false);
-
-	// 	toast.success("Logged out successfully!");
-	// };
-
 	return (
 		<>
-			{/*<HeaderDash logout={logout} />*/}
 			<div className="container container-fluid no-padding">
 				{page === "profile" ? (
 					<Profile

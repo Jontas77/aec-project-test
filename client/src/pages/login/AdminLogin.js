@@ -13,9 +13,10 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import HEADERS_DATA from "../../assets/data/headers_data";
 
 
-const AdminLogin = ({ setAuth }) => {
+const AdminLogin = ({ setAuth, changeHeaders }) => {
 	const [inputs, setInputs] = useState({
 		admin_email: "",
 		admin_password: "",
@@ -45,7 +46,7 @@ const AdminLogin = ({ setAuth }) => {
 			if (parseRes.token) {
 				localStorage.setItem("token", parseRes.token);
 				setAuth(true);
-
+				changeHeaders(HEADERS_DATA.admin);
 				toast.success("Logged in successfully!");
 			} else {
 				setAuth(false);
@@ -67,8 +68,7 @@ const AdminLogin = ({ setAuth }) => {
 				{"Copyright © "}
 				<Link color="inherit" href="">
 					The A Team
-				</Link>
-				{" "}
+				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
