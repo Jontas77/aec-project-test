@@ -15,10 +15,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
 
-
-
-const StudentDashboard = (props) => {
+const StudentDashboard = () => {
 	const [name, setName] = useState("");
+	const [feedback, setFeedback] = useState("");
 	const [id, setId] = useState("");
 	const [info, setInfo] = useState("");
 	// const [message, setMessage] = useState("--No Feedback to Display--");
@@ -38,8 +37,24 @@ const StudentDashboard = (props) => {
 		}
 	};
 
+	const getFeedback = async () => {
+		try {
+			const response = await fetch("/api/mentor/feedback", {
+				method: "GET",
+				headers: { token: localStorage.token },
+			});
+
+			const parseResponse = await response.json();
+
+			setFeedback(parseResponse);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
 	useEffect(() => {
 		getName();
+		getFeedback();
 		//props.changeNotifications(7);
 		let localUserData = localStorage.getItem("profile");
 		//alert(localUserData);
@@ -53,7 +68,7 @@ const StudentDashboard = (props) => {
 				});
 			}
 		}
-	}, []);
+	}, [info]);
 
 	// const logout = (e) => {
 	// 	e.preventDefault();
@@ -62,23 +77,15 @@ const StudentDashboard = (props) => {
 
 	// 	toast.success("Logged out successfully!");
 	// };
-
+	console.log(feedback);
 	return (
 		<>
 			{/*<HeaderDash logout={logout} />*/}
 			<div className="container container-fluid no-padding">
 				{page === "profile" ? (
-					<Profile
-						setPage={setPage}
-						id={id}
-						setInfo={setInfo}
-					/>
+					<Profile setPage={setPage} id={id} setInfo={setInfo} />
 				) : page === "edit_profile" ? (
-					<EditProfile
-						setPage={setPage}
-						id={id}
-						info={info}
-					/>
+					<EditProfile setPage={setPage} id={id} info={info} />
 				) : page === "account_settings" ? (
 					<AccountSettings setPage={setPage} />
 				) : page === "projects" ? (
@@ -94,21 +101,27 @@ const StudentDashboard = (props) => {
 						<div className="links-wrapper">
 							<div className="links">
 								<div className="profile" onClick={() => setPage("profile")}>
-									<PersonIcon style={{ fontSize: "2rem" }} />Profile
+									<PersonIcon style={{ fontSize: "2rem" }} />
+									Profile
 								</div>
 								<div className="projects" onClick={() => setPage("projects")}>
-									<VolunteerActivismIcon style={{ fontSize: "2rem" }} /> Add Project
+									<VolunteerActivismIcon style={{ fontSize: "2rem" }} /> Add
+									Project
 								</div>
 								<div
 									className="competitions"
 									onClick={() => setPage("competitions")}
 								>
-									<SportsKabaddiIcon style={{ fontSize: "2rem" }} />Competitions
+									<SportsKabaddiIcon style={{ fontSize: "2rem" }} />
+									Competitions
 								</div>
 							</div>
 						</div>
 						<hr />
 						<ProjectTable />
+						{feedback.map((el, idx) => (
+							<p key={idx}>{el.feedback}</p>
+						))}
 					</>
 				)}
 			</div>

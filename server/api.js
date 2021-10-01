@@ -81,7 +81,7 @@ router.post("/mentor/feedback/:projectId", authorization, async (req, res) => {
 	try {
 		const { projectId } = req.params;
 		const { feedback } = req.body;
-
+		console.log(req.user.student_id);
 		const getProject = await pool.query(
 			"SELECT * FROM projects WHERE project_id = $1",
 			[projectId]
@@ -92,6 +92,7 @@ router.post("/mentor/feedback/:projectId", authorization, async (req, res) => {
 				"INSERT INTO feedback (student_id, project_id, feedback) VALUES ($1, $2, $3) RETURNING *",
 				[req.user, projectId, feedback]
 			);
+
 			res.json(giveFeedback.rows);
 		}
 	} catch (error) {
