@@ -37,7 +37,6 @@ router.get("/project", async (req, res) => {
 	}
 });
 
-
 // CREATE NEW PROJECT PROPOSAL STEP 1
 router.post("/student/projects", authorization, async (req, res) => {
 	const {
@@ -77,7 +76,41 @@ router.get("/student/projects", authorization, async (req, res) => {
 	}
 });
 
+// SEND FEEDBACK ON PROJECT
+router.post("/mentor/feedback/:projectId", authorization, async (req, res) => {
+	try {
+		const { projectId } = req.params;
+		const { feedback } = req.body;
 
+		const getProject = await pool.query(
+			"SELECT * FROM projects WHERE project_id = $1",
+			[projectId]
+		);
+
+		if (getProject) {
+			const giveFeedback = await pool.query(
+				"INSERT INTO feedback (student_id, project_id, feedback) VALUES ($1, $2, $3) RETURNING *",
+				[req.user, projectId, feedback]
+			);
+			res.json(giveFeedback.rows);
+		}
+	} catch (error) {
+		console.error(error.message);
+	}
+});
+
+// GET FEEDBACK FROM MENTOR
+router.get("/mentor/feedback", authorization, async (req, res) => {
+	try {
+		const result = await pool.query(
+			"SELECT students.student_name, feedback.project_id, feedback.feedback FROM students LEFT JOIN feedback ON students.student_id = feedback.student_id WHERE students.student_id = $1",
+			[req.user]
+		);
+		res.json(result.rows);
+	} catch (error) {
+		console.error(error.message);
+	}
+});
 
 // ADD NEW COMPETITION
 router.post("/competition", async (req, res) => {
@@ -144,12 +177,16 @@ router.get("/students_profile/:student_id", async (req, res) => {
 		if (profile.rowCount > 0) {
 			res.status(200).json(profile.rows[0]);
 		} else {
-			res.status(404).json({ message: "No information found for the student" , body: profile });
+			res.status(404).json({
+				message: "No information found for the student",
+				body: profile,
+			});
 		}
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Couldn't fetch the student profile at the moment", error: error });
+		res.status(500).json({
+			message: "Couldn't fetch the student profile at the moment",
+			error: error,
+		});
 	}
 });
 
@@ -175,14 +212,12 @@ router.post("/students_profile", async (req, res) => {
 			]
 		);
 
-			res.status(200).json({ message: "Ok" });
+		res.status(200).json({ message: "Ok" });
 	} catch (error) {
-		res
-			.status(500)
-			.json({
-				message: "Couldn't post the student profile at the moment",
-				error: error,
-			});
+		res.status(500).json({
+			message: "Couldn't post the student profile at the moment",
+			error: error,
+		});
 	}
 });
 
