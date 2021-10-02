@@ -1,64 +1,75 @@
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect } from "react";
-import Topbar from "./MentorDashboard/topbar/Topbar";
-import Sidebar from "./MentorDashboard/sidebar/Sidebar";
-import "./MentorDashboard/topbar/Topbar.css";
-import "./MentorDashboard/App.css";
-import "./MentorDashboard/sidebar/Sidebar.css";
-import { toast } from "react-toastify";
-import Profile from "./dashComponents/Profile";
-import Projects from "./dashComponents/Projects";
-import Competitions from "./dashComponents/Compititions";
-import { Pages } from "@mui/icons-material";
 
+import React, { useEffect, useState } from "react";
+import Container from "@mui/material/Container";
+import { Button, Typography } from "@mui/material";
+import axios from "axios";
 
+const MentorDashboard = ({ setAuth }) => {
 
-const MentorDashboard = (props) => {
-	const [name, setName] = useState("");
-	const getName = async () => {
+	const [proposals, setProposals] = useState([]);
+	const [page, setPage] = useState("");
+
+	const getProposals = async () => {
 		try {
-			// const response = await fetch("/auth/mentor/dashboard", {
-			// 	method: "GET",
-			// 	headers: { token: localStorage.token },
-			// });
-			const response = await fetch("/auth/student/dashboard", {
-				method: "GET",
-				headers: { token: props.user.user_id },
-			});
-
-			const parseRes = await response.json();
-
-			setName(parseRes[0].mentor_name);
+			const response = await axios.get("/api/project");
+			const data = response.data;
+			setProposals(data);
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
 
 	useEffect(() => {
-		getName();
-	}, []);
+		getProposals();
+	}, [page]);
 
-	const logout = (e) => {
-		e.preventDefault();
-		localStorage.removeItem("token");
-		props.setAuth(false);
-
-		toast.success("You Logged out successfully!");
-	};
 
 	return (
-		<><div className="introduction">
+		<div>
+			<Container style={{ width: "100%" }}>
+							<Button
+								onClick={() => setAuth(false)}
+								variant='contained'
+							>
+								Log out
+							</Button>
+							<br />
+							<br />
+						<div>
+					<table className="table table-hover">
+						<caption>List of Projects</caption>
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Project name</th>
+								<th scope="col">Problem statement</th>
+								<th scope="col">Proposed action</th>
+								<th scope="col">Expected result</th>
+								<th scope="col">Project status</th>
+							</tr>
+						</thead>
+						{proposals.map(({ project_id, project_name, problem_statement, proposed_action, expected_result, project_status }, index) => {
+							return (
+								<tbody key={project_id}>
+									<tr>
+										<th scope="row">{index + 1}</th>
+										<td>{project_name}</td>
+										<td>{problem_statement}</td>
+										<td>{proposed_action}</td>
+										<td>{expected_result}</td>
+										<td>{project_status}</td>
+									</tr>
+								</tbody>
+							);
+						})}
+					</table>
+						</div>
+						</Container>
+		</div>
 
-			<h2>Welcome Back {name}</h2>
-		</div><div>
-				<Profile />
-				<Competitions />
-				<Projects />
-				<Topbar Logout={logout} />
-				<Sidebar />
-				{/* <button onClick={() => setAuth(false)}>Log Out</button> */}
-			</div></>
 	);
 
 };

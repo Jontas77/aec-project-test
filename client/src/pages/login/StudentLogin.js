@@ -13,9 +13,9 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import HEADERS_DATA from "../../assets/data/headers_data";
 
-const StudentLogin = ({ setAuth }) => {
+const StudentLogin = ({ setAuth, changeHeaders }) => {
 	const [inputs, setInputs] = useState({
 		student_email: "",
 		student_password: "",
@@ -45,7 +45,7 @@ const StudentLogin = ({ setAuth }) => {
 			if (parseRes.token) {
 				localStorage.setItem("token", parseRes.token);
 				setAuth(true);
-
+				changeHeaders(HEADERS_DATA.student);
 				toast.success("Logged in successfully!");
 			} else {
 				setAuth(false);
@@ -65,25 +65,25 @@ const StudentLogin = ({ setAuth }) => {
 				{...props}
 			>
 				{"Copyright © "}
-				<Link color="inherit" href="">
+				<Link color="inherit" href="" to="https://github.com/DouglasVDM/aec">
 					The A Team
-				</Link>
-				{""}
+				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
 		);
 	};
 
-	const theme = createTheme();
-
 	return (
 		<>
-			<button>
-				<Link to="/">Home</Link>
-			</button>
-
-			<ThemeProvider theme={theme}>
+			<Container
+				sx={{
+					backgroundImage: "url('/images/background/bg1.png')",
+					maxWidth: "100%",
+					minHeight: "90vh",
+					paddingBottom: "1rem",
+				}}
+			>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
 					<Box
@@ -153,7 +153,7 @@ const StudentLogin = ({ setAuth }) => {
 					</Box>
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
-			</ThemeProvider>
+			</Container>
 		</>
 	);
 };

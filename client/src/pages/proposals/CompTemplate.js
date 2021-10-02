@@ -5,12 +5,19 @@ import { Button, TextField } from "@mui/material";
 
 const CompTemplate = ({ setPage }) => {
 
+  const [compTitle, setCompTitle] = useState("");
   const [compDesc, setCompDesc] = useState("");
   const [contactPers, setContactPers] = useState("");
   const [comp, setComp] = useState([]);
 
+  const comp_title = compTitle;
   const comp_desc = compDesc;
   const contact_pers = contactPers;
+
+  const handleCompTitle = (e) => {
+    e.preventDefault();
+    setCompTitle(e.target.value);
+  };
 
   const handleCompDesc = (e) => {
     e.preventDefault();
@@ -25,7 +32,7 @@ const CompTemplate = ({ setPage }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { comp_desc, contact_pers };
+      const body = {comp_title, comp_desc, contact_pers };
 
       const res = await fetch("/api/competition", {
         method: "POST",
@@ -34,6 +41,7 @@ const CompTemplate = ({ setPage }) => {
       });
 
       setComp([...comp, res]);
+      setCompTitle('')
       setCompDesc("");
       setContactPers("");
       setPage("");
@@ -55,6 +63,18 @@ const CompTemplate = ({ setPage }) => {
         >
           Back
         </Button>
+        <br />
+        <br />
+        <TextField
+          required
+          id="competition-title"
+          label="Competition title"
+          placeholder="What is this name of the  competition?"
+          variant="outlined"
+          style={{ width: "100%" }}
+          value={compTitle}
+          onChange={handleCompTitle}
+        />
         <br />
         <br />
         <TextField

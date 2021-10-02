@@ -56,9 +56,9 @@ img   VARCHAR(500)
 );
 
 CREATE TABLE students_profile (
-student_id uuid REFERENCES students(student_id),
-student_number INT NOT NULL,
-student_phone INT NOT NULL,
+student_id uuid UNIQUE REFERENCES students(student_id),
+student_number BIGINT NOT NULL,
+student_phone BIGINT NOT NULL,
 student_bio VARCHAR(3000) NOT NULL,
 student_img   VARCHAR(500),
 student_active BOOLEAN NOT NULL

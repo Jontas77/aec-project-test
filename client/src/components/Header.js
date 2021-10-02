@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import LogInButton from "./header/LogInButton";
-import UserNotifications from "./header/UserNotifications";
 //import theme from '../themes/theme';
 import HEADERS_DATA from "../assets/data/headers_data";
 
@@ -65,20 +64,19 @@ function Header(props) {
 			>
 				<LogoImage />
 				<PageTitle />
-				<DesktopMenuItems />
+				<DesktopMenuItems headers={props.headers} />
 				<MainMenuIcons
 					{...props}
-					notifications={props.notifications}
-					changeNotifications={props.changeNotifications}
-					user={props.user}
-					changeUser={props.changeUser}
+					setAuth={props.setAuth}
+					isAuthenticated={props.isAuthenticated}
+					changeHeaders={props.changeHeaders}
 				/>
 			</Toolbar>
 		);
 	};
 
-	const DesktopMenuItems = () => {
-		let DISPLAY_DATA = getHeadersData();
+	const DesktopMenuItems = ({ headers }) => {
+		let DISPLAY_DATA = headers?.length > 0 ? headers : HEADERS_DATA.home;
 
 		return (
 			<Stack
@@ -159,17 +157,14 @@ function Header(props) {
 							onClose: handleDrawerClose,
 						}}
 					>
-						<MobileMenuItems />
+						<MobileMenuItems headers={props.headers} />
 					</Drawer>
 
 					<LogoImage />
 				</Box>
-				{/* <PageTitle />*/}
 				<MainMenuIcons
-					notifications={props.notifications}
-					changeNotifications={props.changeNotifications}
-					user={props.user}
-					changeUser={props.changeUser}
+					setAuth={props.setAuth}
+					isAuthenticated={props.isAuthenticated}
 					changeHeaders={props.changeHeaders}
 				/>
 			</Toolbar>
@@ -186,28 +181,18 @@ function Header(props) {
 					alignItems: "center",
 				}}
 			>
-				{props.user.auth ? (
-					<Box sx={{ marginRight: "1.5rem", marginTop: "0.5rem" }}>
-						<UserNotifications
-							notifications={props.notifications}
-							changeNotifications={props.changeNotifications}
-						/>
-					</Box>
-				) : (
-					""
-				)}
 				<LogInButton
 					{...props}
-					user={props.user}
-					changeUser={props.changeUser}
+					setAuth={props.setAuth}
 					changeHeaders={props.changeHeaders}
+					isAuthenticated={props.isAuthenticated}
 				/>
 			</Box>
 		);
 	};
 
-	const MobileMenuItems = () => {
-		let DISPLAY_DATA = getHeadersData();
+	const MobileMenuItems = ({ headers }) => {
+		let DISPLAY_DATA = headers?.length > 0 ? headers : HEADERS_DATA.home;
 		return (
 			<Stack sx={{ marginTop: "1rem" }}>
 				<Typography
@@ -254,16 +239,6 @@ function Header(props) {
 				))}
 			</Stack>
 		);
-	};
-
-	const getHeadersData = () => {
-		if (props.user.auth && props.user.role === "student") {
-			return HEADERS_DATA.student;
-		} else if (props.user.auth && props.user.role === "mentor") {
-			return HEADERS_DATA.mentor;
-		} else {
-			return HEADERS_DATA.home;
-		}
 	};
 
 	const GetMenuIcon = ({ id }) => {
@@ -339,7 +314,7 @@ function Header(props) {
 		return (
 			<Box sx={{ marginLeft: "1rem", marginRight: "1rem", flexGrow: 1 }}>
 				<Typography sx={{ textAlign: "center", fontSize: "1rem" }}>
-					{props.user.auth ? "" : "Advancing Engaged Citizenship"}
+					{"Advancing Engaged Citizenship"}
 				</Typography>
 			</Box>
 		);

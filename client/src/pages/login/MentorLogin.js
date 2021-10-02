@@ -13,9 +13,9 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import HEADERS_DATA from "../../assets/data/headers_data";
 
-const MentorLogin = ({ setAuth }) => {
+const MentorLogin = ({ setAuth, changeHeaders }) => {
 	const [inputs, setInputs] = useState({
 		mentor_email: "",
 		mentor_password: "",
@@ -45,7 +45,7 @@ const MentorLogin = ({ setAuth }) => {
 			if (parseRes.token) {
 				localStorage.setItem("token", parseRes.token);
 				setAuth(true);
-
+				changeHeaders(HEADERS_DATA.mentor);
 				toast.success("Logged in successfully!");
 			} else {
 				setAuth(false);
@@ -67,22 +67,23 @@ const MentorLogin = ({ setAuth }) => {
 				{"Copyright © "}
 				<Link color="inherit" href="">
 					The A Team
-				</Link>
-				{""}
+				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
 		);
 	};
 
-	const theme = createTheme();
-
-
 	return (
 		<>
-			<Link to="/">Home</Link>
-
-			<ThemeProvider theme={theme}>
+			<Container
+				sx={{
+					backgroundImage: "url('/images/background/bg1.png')",
+					maxWidth: "100%",
+					minHeight: "90vh",
+					paddingBottom: "1rem",
+				}}
+			>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
 					<Box
@@ -102,7 +103,9 @@ const MentorLogin = ({ setAuth }) => {
 						<Box
 							component="form"
 							onSubmit={handleSubmit}
-							noValidate sx={{ mt: 1 }}>
+							noValidate
+							sx={{ mt: 1 }}
+						>
 							<TextField
 								margin="normal"
 								required
@@ -141,10 +144,7 @@ const MentorLogin = ({ setAuth }) => {
 							</Button>
 							<Grid container>
 								<Grid item xs>
-									<FormLink
-										href="#"
-										variant="body2"
-									>
+									<FormLink href="#" variant="body2">
 										Forgot password?
 									</FormLink>
 								</Grid>
@@ -153,7 +153,7 @@ const MentorLogin = ({ setAuth }) => {
 					</Box>
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
-			</ThemeProvider>
+			</Container>
 		</>
 	);
 };

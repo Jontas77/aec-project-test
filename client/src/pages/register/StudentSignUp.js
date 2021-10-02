@@ -66,24 +66,26 @@ const StudentSignUp = ({ setAuth }) => {
 				{...props}
 			>
 				{"Copyright © "}
-				<Link color="inherit" href="">
+				<Link color="inherit" href="https://github.com/DouglasVDM/aec">
 					The A Team
-				</Link>
-				{""}
+				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
 		);
 	};
 
-	const theme = createTheme();
 
 	return (
 		<>
-			<button className="btn btn-primary">
-				<Link to="/"></Link>Home
-			</button>
-			<ThemeProvider theme={theme}>
+			<Container
+				sx={{
+					backgroundImage: "url('/images/background/bg1.png')",
+					maxWidth: "100%",
+					minHeight: "90vh",
+					paddingBottom: "1rem",
+				}}
+			>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
 					<Box
@@ -96,9 +98,9 @@ const StudentSignUp = ({ setAuth }) => {
 					>
 						<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
 							<LockOutlinedIcon />
-						</Avatar>
+							</Avatar>
 						<Typography component="h1" variant="h5">
-							Student Register
+							Student Sign up
 						</Typography>
 						<Box
 							component="form"
@@ -169,7 +171,7 @@ const StudentSignUp = ({ setAuth }) => {
 					</Box>
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
-			</ThemeProvider>
+			</Container>
 		</>
 	);
 };

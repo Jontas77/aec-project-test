@@ -11,7 +11,6 @@ const Competitions = ({ page, setPage }) => {
     try {
       const response = await axios.get("/api/competition");
       const data = response.data;
-      console.log(data);
       setCompetitions(data);
     } catch (error) {
       console.error(error.message);
@@ -35,28 +34,32 @@ const Competitions = ({ page, setPage }) => {
           </div>
             <br />
             <br />
-            {competitions.map(({ comp_desc, contact_pers }) => {
+      <table className="table table-hover">
+        <caption>List of Competitions</caption>
+          <thead>
+            <tr>
+                <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Contact person</th>
+            </tr>
+          </thead>
+            {competitions.map(({ comp_title, comp_desc, contact_pers }, index) => {
             return (page === "" ? (
               <h3>--No competitions to display--</h3>
-            ) : (
-              <div key={comp_desc}>
-                <div className="card mb-3" >
-                  <div className="row g-0">
-                    <div className="col-md-4">
-                        <img src='https://media.istockphoto.com/photos/weve-each-got-our-own-dreams-to-nurture-picture-id928855698?b=1&k=20&m=928855698&s=170667a&w=0&h=SFBkvgsUgNF6ANXRKi_JEq4ejUNAtSzbnp05BEUwpUY=' className="img-fluid rounded-start" alt="..." />
-                    </div>
-                    <div className="col-md-8">
-                      <div className="card-body">
-                        <h5 className="card-title">{contact_pers}</h5>
-                        <p className="card-text">{comp_desc}</p>
-                        {/* <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ));
-          })}
+              ) : (
+                <tbody>
+                  <tr>
+                    <th scope="row">{index + 1}</th>
+                    <td>{comp_title}</td>
+                    <td>{comp_desc}</td>
+                    <td>{contact_pers}</td>
+                  </tr>
+                </tbody>
+              ));
+            }
+            )}
+      </table>
         </div>
   );
 };
