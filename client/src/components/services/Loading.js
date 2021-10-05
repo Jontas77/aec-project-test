@@ -1,12 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { Typography, CircularProgress, Container } from "@mui/material";
+import BackgroundImage from "./bg1.png";
 
 const Loading = () => {
   return (
     <Container
       sx={{
-        backgroundImage: "url('/images/background/bg1.png')",
+        backgroundImage: `url(${BackgroundImage})`,
         maxWidth: "100%",
         minHeight: "60vh",
         paddingBottom: "1rem",
