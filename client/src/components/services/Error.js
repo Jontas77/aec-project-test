@@ -1,12 +1,14 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { Typography, Container } from "@mui/material";
+import BcgImage from "../../images/background/bg1.png";
+import ErrorPic from "../../images/various/error.png";
 
 const Error = ({ message }) => {
   return (
     <Container
       sx={{
-        backgroundImage: "url('/images/background/bg1.png')",
+        backgroundImage: `url(${BcgImage})`,
         maxWidth: "100%",
         minHeight: "60vh",
         paddingBottom: "1rem",
@@ -26,7 +28,7 @@ const Error = ({ message }) => {
       >
         <Box
           component='img'
-          src='/images/various/error.png'
+          src={ErrorPic}
           alt='error'
           sx={{ height: "10rem" }}
         ></Box>

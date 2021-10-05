@@ -23,6 +23,13 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import LogInButton from "./header/LogInButton";
+import NavDash from "../images/navbar/dashboard.png";
+import NavEvent from "../images/navbar/events.png";
+import NavLogo from "../images/navbar/logo.png";
+import NavNews from "../images/navbar/news.png";
+import NavProjects from "../images/navbar/projects.png";
+import NavSignUp from "../images/navbar/sign_up.png";
+import NavTrophy from "../images/navbar/trophy.png";
 //import theme from '../themes/theme';
 import HEADERS_DATA from "../assets/data/headers_data";
 
@@ -247,7 +254,7 @@ function Header(props) {
 				return (
 					<Box
 						component="img"
-						src="/images/navbar/projects.png"
+						src={NavProjects}
 						sx={{ height: "1.2rem" }}
 						alt="projects"
 					></Box>
@@ -257,7 +264,7 @@ function Header(props) {
 					<Box
 						component="img"
 						sx={{ height: "1.2rem" }}
-						src="/images/navbar/news.png"
+						src={NavNews}
 						alt="news"
 					></Box>
 				);
@@ -266,7 +273,7 @@ function Header(props) {
 					<Box
 						component="img"
 						sx={{ height: "1.2rem" }}
-						src="/images/navbar/events.png"
+						src={NavEvent}
 						alt="events"
 					></Box>
 				);
@@ -275,7 +282,7 @@ function Header(props) {
 					<Box
 						component="img"
 						sx={{ height: "1.3rem" }}
-						src="/images/navbar/sign_up.png"
+						src={NavSignUp}
 						alt="register"
 					></Box>
 				);
@@ -288,7 +295,7 @@ function Header(props) {
 					<Box
 						component="img"
 						sx={{ height: "1.3rem" }}
-						src="/images/navbar/trophy.png"
+						src={NavTrophy}
 						alt="competitions"
 					></Box>
 				);
@@ -297,7 +304,7 @@ function Header(props) {
 					<Box
 						component="img"
 						sx={{ height: "1.3rem" }}
-						src="/images/navbar/dashboard.png"
+						src={NavDash}
 						alt="dashboard"
 					></Box>
 				);
@@ -329,12 +336,7 @@ function Header(props) {
 				}}
 				onClick={() => history.push("/")}
 			>
-				<img
-					src="/images/navbar/logo.png"
-					alt="Website Logo"
-					height="30rem"
-					width="auto"
-				/>
+				<img src={NavLogo} alt="Website Logo" height="30rem" width="auto" />
 			</Box>
 		);
 	};

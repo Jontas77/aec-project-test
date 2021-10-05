@@ -1,11 +1,4 @@
-import {
-	Box,
-	Stack,
-	Typography,
-	Grid,
-	Divider,
-	Container,
-} from "@mui/material";
+import { Box, Stack, Typography, Grid, Container } from "@mui/material";
 
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
@@ -14,9 +7,10 @@ import FeaturedProjects from "./FeaturedProjects";
 import Testimonials from "./Testimonials";
 import Team from "./Team";
 import BcgImage from "./bg1.png";
+import JoinPic from "../../images/home/join2.png";
 //import theme from '../../themes/theme';
 
-const Content = (props) => {
+const Content = () => {
 	let history = useHistory();
 
 	return (
@@ -52,7 +46,7 @@ const Content = (props) => {
 									<WrappedImage
 										onClick={() => history.push("/student/sign-up")}
 									>
-										<img src="/images/home/join2.png" alt="join now" />
+										<img src={JoinPic} alt="join now" />
 									</WrappedImage>
 									A platform where students can journey with a team of mentors
 									to assist with the innovation of project ideas, during the

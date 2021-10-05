@@ -2,6 +2,7 @@ import * as React from "react";
 import { Box, Typography, Link } from "@mui/material";
 import styled from "styled-components";
 import theme from "../../themes/theme";
+import FooterPic from "../../images/footer/footer_icon.png";
 
 function Copyright() {
   return (
@@ -21,7 +22,7 @@ const Footer = () => {
       <FlexItem>
         <ImageContainer>
           <Image
-            src='images/footer/footer_icon.png'
+            src={FooterPic}
             alt='Footer'
             height='100%'
             width='auto'

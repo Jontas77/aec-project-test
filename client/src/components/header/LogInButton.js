@@ -8,6 +8,9 @@ import { withRouter } from "react-router-dom";
 import { Box } from "@mui/material";
 import { withSnackbar } from "notistack";
 import HEADERS_DATA from "../../assets/data/headers_data";
+import NavLogout from "../../images/navbar/log_out.png";
+import NavLogin from "../../images/navbar/log_in.png";
+import NavAdmin from "../../images/navbar/admin.png";
 
 function LogInButton(props) {
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -52,8 +55,8 @@ function LogInButton(props) {
 					}}
 					src={
 						props.isAuthenticated
-							? "/images/navbar/log_out.png"
-							: "/images/navbar/log_in.png"
+							? `${NavLogout}`
+							: `${NavLogin}`
 					}
 					alt="auth"
 				></Box>
@@ -121,7 +124,7 @@ function LogInButton(props) {
 				>
 					<Box
 						component="img"
-						src="/images/navbar/admin.png"
+						src={NavAdmin}
 						sx={{ height: "1.5rem", marginRight: "1rem", marginLeft: "0.8rem" }}
 						alt="projects"
 					></Box>
