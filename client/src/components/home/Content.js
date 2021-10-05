@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import FeaturedProjects from "./FeaturedProjects";
 import Testimonials from "./Testimonials";
 import Team from "./Team";
+import BcgImage from "./bg1.png";
 //import theme from '../../themes/theme';
 
 const Content = (props) => {
@@ -21,7 +22,7 @@ const Content = (props) => {
 	return (
 		<Container
 			sx={{
-				backgroundImage: "url('/images/background/bg1.png')",
+				backgroundImage: `url(${BcgImage})`,
 				maxWidth: "100%",
 				minHeight: "90vh",
 				paddingBottom: "1rem",
