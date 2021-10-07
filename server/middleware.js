@@ -1,5 +1,6 @@
 import helmet from "helmet";
 import path from "path";
+import multer from "multer";
 
 export const configuredHelmet = () =>
 	helmet({
@@ -35,3 +36,7 @@ export const pushStateRouting = (apiRoot, staticDir) => (req, res, next) => {
 	}
 	next();
 };
+
+export const imageUpload = multer({
+	dest: "images",
+});

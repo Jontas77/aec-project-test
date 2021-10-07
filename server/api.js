@@ -1,11 +1,57 @@
 import { Router } from "express";
 import pool from "./db.js";
 import authorization from "./jwtMiddleware/authorization";
+import { imageUpload } from "./middleware.js";
+import path from "path";
 
 const router = new Router();
 
 router.get("/", (_, res) => {
 	res.json({ message: "Welcome to Stellenbosch University" });
+});
+
+// IMAGE UPLOAD ROUTES
+router.post("/image", imageUpload.single("image"), authorization, async (req, res) => {
+	try {
+		const { filename, mimetype, size } = req.file;
+		const filepath = req.file.path;
+		await pool.query(
+			"INSERT INTO image_files(filename, filepath, mimetype, size) VALUES ($1, $2, $3, $4) RETURNING *",
+			[filename, filepath, mimetype, size]
+		);
+		res.json({ success: true, filename });
+	} catch (error) {
+		res.json({
+			success: false,
+			message: "Upload Falied",
+			stack: error.stack,
+		});
+	}
+});
+
+router.get("/image/:filename", authorization, async (req, res) => {
+	try {
+		const { filename } = req.params;
+
+		const imageFile = await pool.query(
+			"SELECT * FROM image_files WHERE filename = $1",
+			[filename]
+		);
+
+		if (imageFile.rows[0]) {
+			const dirname = path.resolve();
+			const fullfilepath = path.join(dirname, imageFile.rows[0].filepath);
+			res.type(imageFile.rows[0].mimetype).sendFile(fullfilepath);
+		} else {
+			res.json("Image does not exists!!");
+		}
+	} catch (error) {
+		res.status(404).json({
+			success: false,
+			message: "Not Found",
+			stack: error.stack,
+		});
+	}
 });
 
 // ADD NEW PROJECT
@@ -36,7 +82,6 @@ router.get("/project", async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 });
-
 
 // CREATE NEW PROJECT PROPOSAL STEP 1
 router.post("/student/projects", authorization, async (req, res) => {
@@ -76,8 +121,6 @@ router.get("/student/projects", authorization, async (req, res) => {
 		console.error(error.message);
 	}
 });
-
-
 
 // ADD NEW COMPETITION
 router.post("/competition", async (req, res) => {
@@ -144,20 +187,16 @@ router.get("/students_profile/:student_id", async (req, res) => {
 		if (profile.rowCount > 0) {
 			res.status(200).json(profile.rows[0]);
 		} else {
-			res
-				.status(404)
-				.json({
-					message: "No information found for the student",
-					body: profile,
-				});
+			res.status(404).json({
+				message: "No information found for the student",
+				body: profile,
+			});
 		}
 	} catch (error) {
-		res
-			.status(500)
-			.json({
-				message: "Couldn't fetch the student profile at the moment",
-				error: error,
-			});
+		res.status(500).json({
+			message: "Couldn't fetch the student profile at the moment",
+			error: error,
+		});
 	}
 });
 
