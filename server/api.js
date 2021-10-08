@@ -23,7 +23,7 @@ router.post("/image", imageUpload.single("image"), authorization, async (req, re
 	} catch (error) {
 		res.json({
 			success: false,
-			message: "Upload Falied",
+			message: "Upload Failed",
 			stack: error.stack,
 		});
 	}
