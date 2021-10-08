@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box, Button, Divider, Typography } from "@mui/material";
@@ -467,33 +468,54 @@ const InitialsAvatar = ({ name }) => {
 };
 
 const UploadButton = () => {
+	const [image, setImage] = useState(null);
+
+	const selectImage = async (file) => {
+		try {
+			const response = await fetch("/api/image", {
+				method: "POST",
+				body: file,
+			});
+
+			const parseData = await response.json();
+			console.log(parseData);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+console.log(image);
 	return (
-		<Box
-			sx={{
-				alignItems: "center",
-				display: "flex",
-				justifyContent: "center",
-				marginBottom: "0.7rem",
-			}}
-		>
-			<Box
+		// <Box
+		// 	sx={{
+		// 		alignItems: "center",
+		// 		display: "flex",
+		// 		justifyContent: "center",
+		// 		marginBottom: "0.7rem",
+		// 	}}
+		// >
+		<>
+			<input
 				accept="image/*"
 				id="contained-button-file"
 				multiple
 				type="file"
 				name="image"
-				sx={{ display: "none" }}
-			>
-				{" "}
-			</Box>
-			<Button
-				variant="outlined"
-				sx={{ textTransform: "none" }}
-				component="span"
-			>
-				<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
-			</Button>
-		</Box>
+				style={{ display: "none" }}
+				onChange={(e) => setImage(e.target.files[0])}
+			/>
+
+			<label htmlFor="contained-button-file">
+				<Button
+					variant="outlined"
+					sx={{ textTransform: "none" }}
+					component="span"
+
+				>
+					<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
+				</Button>
+			</label>
+			</>
+
 	);
 };
 
