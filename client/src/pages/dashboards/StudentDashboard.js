@@ -14,6 +14,7 @@ import ProjectTable from "./dashComponents/ProjectTable";
 import PersonIcon from "@mui/icons-material/Person";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
+import Upload from "./Upload";
 
 
 
@@ -99,6 +100,7 @@ const StudentDashboard = (props) => {
 						</div>
 						<hr />
 						<ProjectTable />
+						<Upload />
 					</>
 				)}
 			</div>
