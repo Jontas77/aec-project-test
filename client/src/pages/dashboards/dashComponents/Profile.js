@@ -18,6 +18,8 @@ const StudentProfile = ({ setPage, id, setInfo }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState({ state: false, message: "" });
 
+	console.log(id);
+
 	useEffect(() => {
 		const getProfileInfo = async () => {
 			const studentInfo = {
@@ -447,6 +449,21 @@ const InitialsAvatar = ({ name }) => {
 	for (let word of arr) {
 		string += word?.substring(0, 1);
 	}
+	const [image, setImage] = useState(null);
+
+	const getProfileImage = async (name) => {
+		try {
+			const response = await fetch(`/api/image/${name}`, {
+				method: "GET",
+				headers: { token: localStorage.token },
+			});
+
+			const parseResponse = await response.json();
+			console.log(parseResponse);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 	return (
 		<Box
 			sx={{
@@ -470,29 +487,24 @@ const InitialsAvatar = ({ name }) => {
 const UploadButton = () => {
 	const [image, setImage] = useState(null);
 
-	const selectImage = async (file) => {
+	const selectImage = async () => {
 		try {
+			const formdata = new FormData();
+			formdata.append("image", image, image.name);
 			const response = await fetch("/api/image", {
 				method: "POST",
-				body: file,
+				headers: { token: localStorage.token },
+				body: formdata,
 			});
 
 			const parseData = await response.json();
-			console.log(parseData);
+			setImage(parseData);
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
-console.log(image);
+
 	return (
-		// <Box
-		// 	sx={{
-		// 		alignItems: "center",
-		// 		display: "flex",
-		// 		justifyContent: "center",
-		// 		marginBottom: "0.7rem",
-		// 	}}
-		// >
 		<>
 			<input
 				accept="image/*"
@@ -500,22 +512,19 @@ console.log(image);
 				multiple
 				type="file"
 				name="image"
-				style={{ display: "none" }}
+				style={{ fontSize: "10px", marginBottom: "10px", marginLeft: "47px" }}
 				onChange={(e) => setImage(e.target.files[0])}
 			/>
 
-			<label htmlFor="contained-button-file">
-				<Button
-					variant="outlined"
-					sx={{ textTransform: "none" }}
-					component="span"
-
-				>
-					<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
-				</Button>
-			</label>
-			</>
-
+			<Button
+				variant="outlined"
+				sx={{ textTransform: "none" }}
+				component="span"
+				onClick={selectImage}
+			>
+				<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
+			</Button>
+		</>
 	);
 };
 
