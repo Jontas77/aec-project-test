@@ -11,13 +11,14 @@ router.get("/", (_, res) => {
 });
 
 // IMAGE UPLOAD ROUTES
-router.post("/image", imageUpload.single("image"), authorization, async (req, res) => {
+
+router.post("/image", imageUpload.single("image"),  async (req, res) => {
 	try {
 		const { filename, mimetype, size } = req.file;
 		const filepath = req.file.path;
 		await pool.query(
-			"INSERT INTO image_files(filename, filepath, mimetype, size) VALUES ($1, $2, $3, $4) RETURNING *",
-			[filename, filepath, mimetype, size]
+			"INSERT INTO image_files(student_id, filename, filepath, mimetype, size) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+			[req.user, filename, filepath, mimetype, size]
 		);
 		res.json({ success: true, filename });
 	} catch (error) {
@@ -29,13 +30,13 @@ router.post("/image", imageUpload.single("image"), authorization, async (req, re
 	}
 });
 
-router.get("/image/:filename", authorization, async (req, res) => {
+router.get("/image/:filename",  async (req, res) => {
 	try {
 		const { filename } = req.params;
 
 		const imageFile = await pool.query(
-			"SELECT * FROM image_files WHERE filename = $1",
-			[filename]
+			"SELECT * FROM image_files WHERE filename = $1 AND student_id = $2",
+			[filename, req.user]
 		);
 
 		if (imageFile.rows[0]) {

@@ -2,18 +2,47 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 
-
 const Upload = () => {
-	const [selectedImage, setSelectedImage] = useState(null);
-	const [imageUrl, setImageUrl] = useState(null);
+	const [selectedImage, setSelectedImage] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
+
+	const uploadImage = async (e) => {
+		try {
+			const file = e.target.files[0];
+			const formData = new FormData();
+			formData.append("image", file);
+
+			const response = await fetch("/api/image", {
+				method: "POST",
+				headers: { "token": localStorage.token },
+				body: formData,
+			});
+
+			const parseResponse = await response.json();
+
+			setSelectedImage(parseResponse.filename);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const getImage = async (file) => {
+		try {
+			const response = await fetch(`/api/image/${file}`, {
+				method: "GET",
+				headers: { "token": localStorage.token },
+			});
+			console.log(response);
+			setImageUrl(response.url);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 
 	useEffect(() => {
-		if (selectedImage) {
-			setImageUrl(URL.createObjectURL(selectedImage));
-		}
+			getImage(selectedImage);
 	}, [selectedImage]);
 console.log(imageUrl);
-console.log(selectedImage.name);
 	return (
 		<>
 			<input
@@ -21,19 +50,26 @@ console.log(selectedImage.name);
 				type="file"
 				id="select-image"
 				style={{ display: "none" }}
-				onChange={(e) => setSelectedImage(e.target.files[0])}
+				onChange={(e) => uploadImage(e)}
 			/>
 			<label htmlFor="select-image">
-				<Button variant="contained" color="primary" component="span">
+				<Button
+					variant="contained"
+					color="primary"
+					component="span"
+					onClick={uploadImage}
+				>
 					Upload Image
 				</Button>
 			</label>
-            {imageUrl && selectedImage && (
-                <Box mt={2} textAlign="center">
-                    <div><h2>Image Preview:</h2></div>
-                    <img src={imageUrl} alt={selectedImage.name} height="200px" />
-                </Box>
-            )}
+			{imageUrl && (
+				<Box mt={2} textAlign="center">
+					<div>
+						<h2>Image Preview:</h2>
+					</div>
+					<img src={imageUrl} alt={selectedImage} height="200px" />
+				</Box>
+			)}
 		</>
 	);
 };

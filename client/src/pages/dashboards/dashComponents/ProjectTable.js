@@ -24,8 +24,6 @@ const ProjectTable = () => {
 		getProjects();
 	}, []);
 
-	console.log(projects);
-
 	return (
 		<>
 			<div className="project-table">
