@@ -14,7 +14,7 @@ const Upload = () => {
 
 			const response = await fetch("/api/image", {
 				method: "POST",
-				headers: { "token": localStorage.token },
+				headers: { token: localStorage.token },
 				body: formData,
 			});
 
@@ -30,9 +30,9 @@ const Upload = () => {
 		try {
 			const response = await fetch(`/api/image/${file}`, {
 				method: "GET",
-				headers: { "token": localStorage.token },
+				headers: { token: localStorage.token },
 			});
-			console.log(response);
+
 			setImageUrl(response.url);
 		} catch (error) {
 			console.error(error.message);
@@ -40,9 +40,11 @@ const Upload = () => {
 	};
 
 	useEffect(() => {
+		if (selectedImage) {
 			getImage(selectedImage);
+		}
 	}, [selectedImage]);
-console.log(imageUrl);
+
 	return (
 		<>
 			<input
@@ -53,16 +55,11 @@ console.log(imageUrl);
 				onChange={(e) => uploadImage(e)}
 			/>
 			<label htmlFor="select-image">
-				<Button
-					variant="contained"
-					color="primary"
-					component="span"
-					onClick={uploadImage}
-				>
+				<Button variant="contained" color="primary" component="span">
 					Upload Image
 				</Button>
 			</label>
-			{imageUrl && (
+			{imageUrl && selectedImage && (
 				<Box mt={2} textAlign="center">
 					<div>
 						<h2>Image Preview:</h2>

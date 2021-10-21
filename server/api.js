@@ -12,7 +12,7 @@ router.get("/", (_, res) => {
 
 // IMAGE UPLOAD ROUTES
 
-router.post("/image", imageUpload.single("image"),  async (req, res) => {
+router.post("/image", imageUpload.single("image"), authorization,  async (req, res) => {
 	try {
 		const { filename, mimetype, size } = req.file;
 		const filepath = req.file.path;
@@ -30,7 +30,7 @@ router.post("/image", imageUpload.single("image"),  async (req, res) => {
 	}
 });
 
-router.get("/image/:filename",  async (req, res) => {
+router.get("/image/:filename", authorization, async (req, res) => {
 	try {
 		const { filename } = req.params;
 

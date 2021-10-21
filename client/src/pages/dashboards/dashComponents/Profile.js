@@ -451,19 +451,23 @@ const InitialsAvatar = ({ name }) => {
 	}
 	const [image, setImage] = useState(null);
 
-	const getProfileImage = async (name) => {
+	const getProfileImage = async () => {
 		try {
-			const response = await fetch(`/api/image/${name}`, {
+			const response = await fetch("/api/image/JET.jpg", {
 				method: "GET",
-				headers: { token: localStorage.token },
+				headers: { "token": localStorage.token },
 			});
 
-			const parseResponse = await response.json();
-			console.log(parseResponse);
+			setImage(response.url);
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
+
+	useEffect(() => {
+		getProfileImage();
+	}, []);
+
 	return (
 		<Box
 			sx={{
@@ -477,9 +481,11 @@ const InitialsAvatar = ({ name }) => {
 				marginBottom: "1rem",
 			}}
 		>
+			{image ? <img src={image} alt="jet" /> : (
 			<Typography sx={{ fontSize: "5rem", color: "primary.light" }}>
 				{string}
 			</Typography>
+			)}
 		</Box>
 	);
 };
@@ -493,7 +499,7 @@ const UploadButton = () => {
 			formdata.append("image", image, image.name);
 			const response = await fetch("/api/image", {
 				method: "POST",
-				headers: { token: localStorage.token },
+				headers: { "token": localStorage.token },
 				body: formdata,
 			});
 
