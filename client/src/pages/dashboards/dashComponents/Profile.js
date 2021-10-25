@@ -17,8 +17,47 @@ const StudentProfile = ({ setPage, id, setInfo }) => {
 	const [projectsId, setProjectsId] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState({ state: false, message: "" });
+	const [selectedImage, setSelectedImage] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
 
-	console.log(id);
+	const uploadImage = async (e) => {
+		try {
+			const file = e.target.files[0];
+			const formData = new FormData();
+			formData.append("image", file);
+
+			const response = await fetch("/api/image", {
+				method: "POST",
+				headers: { token: localStorage.token },
+				body: formData,
+			});
+
+			const parseResponse = await response.json();
+
+			setSelectedImage(parseResponse.filename);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const getImage = async (file) => {
+		try {
+			const response = await fetch(`/api/image/${file}`, {
+				method: "GET",
+				headers: { token: localStorage.token },
+			});
+
+			setImageUrl(response.url);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	useEffect(() => {
+		if (selectedImage) {
+			getImage(selectedImage);
+		}
+	}, [selectedImage]);
 
 	useEffect(() => {
 		const getProfileInfo = async () => {
@@ -111,10 +150,18 @@ const StudentProfile = ({ setPage, id, setInfo }) => {
 							>
 								<TopContainer>
 									<PhotoContainer>
-										<InitialsAvatar name={`${profileInfo?.student_name}`} />
+										<InitialsAvatar
+											name={`${profileInfo?.student_name}`}
+											selectedImage={selectedImage}
+											imageUrl={imageUrl}
+										/>
 									</PhotoContainer>
 									<InfoContainer>
-										<Info profileInfo={profileInfo} setPage={setPage} />
+										<Info
+											profileInfo={profileInfo}
+											setPage={setPage}
+											uploadImage={uploadImage}
+										/>
 									</InfoContainer>
 								</TopContainer>
 							</Box>
@@ -271,7 +318,7 @@ const Projects = ({ projects, handleProjectView, projectsId }) => {
 	);
 };
 
-const Info = ({ profileInfo, setPage }) => {
+const Info = ({ profileInfo, setPage, uploadImage }) => {
 	return (
 		<Box
 			sx={{
@@ -313,7 +360,7 @@ const Info = ({ profileInfo, setPage }) => {
 					width: "100%",
 				}}
 			>
-				<UploadButton />
+				<UploadButton uploadImage={uploadImage} />
 				<Button
 					variant="outlined"
 					startIcon={<EditIcon />}
@@ -443,93 +490,59 @@ const Bio = ({ bio }) => {
 	);
 };
 
-const InitialsAvatar = ({ name }) => {
+const InitialsAvatar = ({ name, selectedImage, imageUrl }) => {
 	const arr = name?.trim().split(" ");
 	let string = "";
 	for (let word of arr) {
 		string += word?.substring(0, 1);
 	}
-	const [image, setImage] = useState(null);
-
-	const getProfileImage = async () => {
-		try {
-			const response = await fetch("/api/image/JET.jpg", {
-				method: "GET",
-				headers: { "token": localStorage.token },
-			});
-
-			setImage(response.url);
-		} catch (error) {
-			console.error(error.message);
-		}
-	};
-
-	useEffect(() => {
-		getProfileImage();
-	}, []);
 
 	return (
-		<Box
-			sx={{
-				bgcolor: "primary.main",
-				display: "flex",
-				alignItems: "center",
-				justifyContent: "center",
-				height: "10rem",
-				width: "10rem",
-				borderRadius: "50%",
-				marginBottom: "1rem",
-			}}
-		>
-			{image ? <img src={image} alt="jet" /> : (
-			<Typography sx={{ fontSize: "5rem", color: "primary.light" }}>
-				{string}
-			</Typography>
+		<>
+			{imageUrl && selectedImage ? (
+				<img src={imageUrl} alt={selectedImage} style={{ width: "170px", height: "170px", borderRadius: "50%" }} />
+			) : (
+				<Box
+					sx={{
+						bgcolor: "primary.main",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						height: "10rem",
+						width: "10rem",
+						borderRadius: "50%",
+						marginBottom: "1rem",
+					}}
+				>
+					<Typography sx={{ fontSize: "5rem", color: "primary.light" }}>
+						{string}
+					</Typography>
+				</Box>
 			)}
-		</Box>
+		</>
 	);
 };
 
-const UploadButton = () => {
-	const [image, setImage] = useState(null);
-
-	const selectImage = async () => {
-		try {
-			const formdata = new FormData();
-			formdata.append("image", image, image.name);
-			const response = await fetch("/api/image", {
-				method: "POST",
-				headers: { "token": localStorage.token },
-				body: formdata,
-			});
-
-			const parseData = await response.json();
-			setImage(parseData);
-		} catch (error) {
-			console.error(error.message);
-		}
-	};
-
+const UploadButton = ({ uploadImage }) => {
 	return (
 		<>
 			<input
 				accept="image/*"
 				id="contained-button-file"
-				multiple
 				type="file"
 				name="image"
-				style={{ fontSize: "10px", marginBottom: "10px", marginLeft: "47px" }}
-				onChange={(e) => setImage(e.target.files[0])}
+				style={{ display: "none" }}
+				onChange={(e) => uploadImage(e)}
 			/>
-
-			<Button
-				variant="outlined"
-				sx={{ textTransform: "none" }}
-				component="span"
-				onClick={selectImage}
-			>
-				<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
-			</Button>
+			<label htmlFor="contained-button-file">
+				<Button
+					variant="outlined"
+					sx={{ textTransform: "none" }}
+					component="span"
+				>
+					<AddAPhotoIcon sx={{ marginRight: "0.5rem" }} /> Upload photo
+				</Button>
+			</label>
 		</>
 	);
 };
