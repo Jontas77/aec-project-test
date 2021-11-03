@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from "react";
-//import HeaderDash from "./dashComponents/HeaderDash";
 // import { toast } from "react-toastify";
 import "./Dashboard.css";
 
@@ -11,6 +10,8 @@ import EditProfile from "./dashComponents/EditProfile";
 import Projects from "./dashComponents/Projects";
 import Competitions from "./dashComponents/Compititions";
 import ProjectTable from "./dashComponents/ProjectTable";
+import AddProposal from "./dashComponents/AddProposal";
+
 import PersonIcon from "@mui/icons-material/Person";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
@@ -18,11 +19,10 @@ import Upload from "./Upload";
 
 
 
-const StudentDashboard = (props) => {
+const StudentDashboard = () => {
 	const [name, setName] = useState("");
 	const [id, setId] = useState("");
 	const [info, setInfo] = useState("");
-	// const [message, setMessage] = useState("--No Feedback to Display--");
 	const [page, setPage] = useState("");
 
 	const getName = async () => {
@@ -41,15 +41,15 @@ const StudentDashboard = (props) => {
 
 	useEffect(() => {
 		getName();
-		//props.changeNotifications(7);
 		let localUserData = localStorage.getItem("profile");
 		if (localUserData) {
 			let userProfile = JSON.parse(localUserData);
 			for (let name in userProfile) {
-				//console.log(`${name}: ${userProfile[name]}, `);
-				setInfo({
-					...info,
-					[name]: userProfile[name],
+				setInfo((info) => {
+					return ({
+						...info,
+						[name]: userProfile[name],
+					});
 				});
 			}
 		}
@@ -76,6 +76,8 @@ const StudentDashboard = (props) => {
 					<Projects setPage={setPage} />
 				) : page === "competitions" ? (
 					<Competitions setPage={setPage} />
+				) : page === "proposal" ? (
+					<AddProposal setPage={setPage} />
 				) : (
 					<>
 						<div className="introduction">
@@ -87,7 +89,7 @@ const StudentDashboard = (props) => {
 								<div className="profile" onClick={() => setPage("profile")}>
 									<PersonIcon style={{ fontSize: "2rem" }} />Profile
 								</div>
-								<div className="projects" onClick={() => setPage("projects")}>
+								<div className="projects" onClick={() => setPage("proposal")}>
 									<VolunteerActivismIcon style={{ fontSize: "2rem" }} /> Add Project
 								</div>
 								<div

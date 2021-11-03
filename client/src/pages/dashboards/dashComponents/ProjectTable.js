@@ -6,7 +6,7 @@ const ProjectTable = () => {
 
 	const getProjects = async () => {
 		try {
-			const response = await fetch("/api/student/projects", {
+			const response = await fetch("/api/student/projects/proposal", {
 				method: "GET",
 				headers: { token: localStorage.token },
 			});
